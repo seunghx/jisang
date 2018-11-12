@@ -7,64 +7,60 @@ import com.jisang.security.validation.JWTParsing;
 
 public class AnonymousUserAuthTokenDTO implements TokenDTO {
 
+    // Static Fields
+    // ==========================================================================================================================
 
-	// Static Fields
-	//==========================================================================================================================
-	
-	
-	// Instance Fields
-	//==========================================================================================================================
-	
-	@NotBlank(groups= {JWTParsing.class})
-	private String token;
-	
-	@NotBlank(groups= {JWTParsing.class})
-	private String clientIPAddr;
-	
-	@NotBlank(groups= {JWTBuilding.class})
-	private String userEmail;
-	
-	private boolean authenticated;
-	
-	
-	// Constructors
-	//==========================================================================================================================
+    // Instance Fields
+    // ==========================================================================================================================
 
-	
-	// Methods
-	//==========================================================================================================================
+    @NotBlank(groups = { JWTParsing.class })
+    private String token;
 
-	@Override
-	public String getToken() {
-		return token;
-	}
-	
-	public boolean isAuthenticated() {
-		return authenticated;
-	}
+    @NotBlank(groups = { JWTParsing.class })
+    private String clientIPAddr;
 
-	public String getClientIPAddr() {
-		return clientIPAddr;
-	}
+    @NotBlank(groups = { JWTBuilding.class })
+    private String userEmail;
 
-	public void setClientIPAddr(String clientIPAddr) {
-		this.clientIPAddr = clientIPAddr;
-	}
-	
-	public void setToken(String token) {
-		this.token = token;
-	}
-	
-	public void setAuthenticated(boolean authenticated) {
-		this.authenticated = authenticated;
-	}
-	
-	public String getUserEmail() {
-		return userEmail;
-	}
+    private boolean authenticated;
 
-	public void setUserEmail(String userEmail) {
-		this.userEmail = userEmail;
-	}
+    // Constructors
+    // ==========================================================================================================================
+
+    // Methods
+    // ==========================================================================================================================
+
+    @Override
+    public String getToken() {
+        return token;
+    }
+
+    public boolean isAuthenticated() {
+        return authenticated;
+    }
+
+    public String getClientIPAddr() {
+        return clientIPAddr;
+    }
+
+    public void setClientIPAddr(String clientIPAddr) {
+        this.clientIPAddr = clientIPAddr;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public void setAuthenticated(boolean authenticated) {
+        this.authenticated = authenticated;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
 
 }

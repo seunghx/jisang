@@ -10,35 +10,35 @@ package com.jisang.service.product;
  */
 public class IllegalManagerAccessDetectedException extends RuntimeException {
 
-	private static final long serialVersionUID = 9214203336725339712L;
-	
-	private int managerId;
-	private int productId;
-	
-	public IllegalManagerAccessDetectedException(String message) {
-		super(message);
-	}
-	
-	public IllegalManagerAccessDetectedException(String message, Throwable cause) {
-		this(message);
-		initCause(cause);
-	}
-	
-	public IllegalManagerAccessDetectedException(String message, int managerId, int productId) {
-		this.managerId = managerId;
-		this.productId = productId;
-	}
+    private static final long serialVersionUID = 9214203336725339712L;
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
+    private int managerId;
+    private int productId;
 
-	public int getManagerId() {
-		return managerId;
-	}
+    public IllegalManagerAccessDetectedException(String message) {
+        super(message);
+    }
 
-	public int getProductId() {
-		return productId;
-	}
-	
+    public IllegalManagerAccessDetectedException(String message, Throwable cause) {
+        this(message);
+        initCause(cause);
+    }
+
+    public IllegalManagerAccessDetectedException(String message, int managerId, int productId) {
+        this.managerId = managerId;
+        this.productId = productId;
+    }
+
+    public static long getSerialversionuid() {
+        return serialVersionUID;
+    }
+
+    public int getManagerId() {
+        return managerId;
+    }
+
+    public int getProductId() {
+        return productId;
+    }
+
 }

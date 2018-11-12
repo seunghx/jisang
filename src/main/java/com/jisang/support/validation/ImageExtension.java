@@ -18,12 +18,14 @@ import javax.validation.Payload;
  */
 @Documented
 @Constraint(validatedBy = ImageExtensionValidator.class)
-@Target( { ElementType.FIELD, ElementType.TYPE_USE })
+@Target({ ElementType.FIELD, ElementType.TYPE_USE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ImageExtension {
-   
-	String message() default "Unsupported image format.";
+
+    String message() default "Unsupported image format.";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
-    
+
 }

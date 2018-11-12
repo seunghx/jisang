@@ -18,47 +18,48 @@ import static org.springframework.data.elasticsearch.annotations.FieldType.Text;
  */
 @Document(indexName = "product", type = "hashtag", createIndex = false)
 public class HashTag {
-	
-	@Id
-	@JsonIgnore
-	private String id;
-	@Field(type = Text)
-	private String content;
-	private int productId;
-	
-	public HashTag() {}
-	
-	public HashTag(int productId, String content) {
-		this.productId = productId;
-		this.content = content;
-	}
-	
-	public String getId() {
-		return id;
-	}
-	
-	public void setId(String id) {
-		this.id = id;
-	}
-	
-	public String getContent() {
-		return content;
-	}
-	
-	public void setContent(String content) {
-		this.content = content;
-	}
-	
-	public int getProductId() {
-		return productId;
-	}
-	
-	public void setProductId(int productId) {
-		this.productId = productId;
-	}
-	
-	@Override
-	public String toString() {
-		return getClass().getName() + "[id=" + id + ", content=" + content + ", productId=" + productId + "]";
-	}	
+
+    @Id
+    @JsonIgnore
+    private String id;
+    @Field(type = Text)
+    private String content;
+    private int productId;
+
+    public HashTag() {
+    }
+
+    public HashTag(int productId, String content) {
+        this.productId = productId;
+        this.content = content;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getName() + "[id=" + id + ", content=" + content + ", productId=" + productId + "]";
+    }
 }

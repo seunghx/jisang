@@ -12,23 +12,23 @@ import java.util.List;
  *
  */
 public class SearchKeywordPreviewDTO {
-	
-	private List<String> keywords = new ArrayList<>();
 
-	public List<String> getKeyword() {
-		return keywords;
-	}
+    private List<String> keywords = new ArrayList<>();
 
-	public void setKeywords(List<String> keywords) {
-		this.keywords = keywords;
-	}
-	
-	public void addKeyword(String keyword) {
-		keywords.add(keyword);
-	}
+    public List<String> getKeyword() {
+        return keywords;
+    }
 
-	@Override
-	public String toString() {
-		return getClass().getName() + "[keywords=" + keywords + "]";
-	}
+    public void setKeywords(List<String> keywords) {
+        this.keywords = keywords;
+    }
+
+    public void addKeyword(String keyword) {
+        keywords.add(keyword);
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getName() + "[keywords=" + keywords + "]";
+    }
 }

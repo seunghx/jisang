@@ -12,11 +12,12 @@ import com.jisang.domain.Comment;
  *
  */
 public interface CommentDAO extends MybatisMapper {
-	
-	public void create(Comment comment);
-	public void updateParentId(int parentId);
-	
-	
-	public Comment read(int commentId);
-	public List<Comment> readList(int productId);
+
+    public void create(Comment comment);
+
+    public void updateParentId(int parentId);
+
+    public Comment read(int commentId);
+
+    public List<Comment> readList(int productId);
 }

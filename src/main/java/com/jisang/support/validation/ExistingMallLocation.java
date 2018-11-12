@@ -9,14 +9,15 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-
 @Documented
 @Constraint(validatedBy = MallLocationValidator.class)
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface ExistingMallLocation {
-	
-	String message() default "Invalid location info";
-	Class<?>[] groups() default {};
-	Class<? extends Payload>[] payload() default {}; 
+
+    String message() default "Invalid location info";
+
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
 }

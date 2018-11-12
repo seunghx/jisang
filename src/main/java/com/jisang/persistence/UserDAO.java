@@ -10,7 +10,9 @@ import com.jisang.domain.User;
  *
  */
 public interface UserDAO extends MybatisMapper {
-	public User read(int uid);
-	public void create(User user);
-	public void update(User user);
+    public User read(int uid);
+
+    public void create(User user);
+
+    public void update(User user);
 }

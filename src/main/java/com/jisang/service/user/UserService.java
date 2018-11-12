@@ -13,8 +13,10 @@ import com.jisang.dto.user.SignupDTO;
  *
  */
 public interface UserService {
-	public AuthUserResponseDTO findUserForManagement(int uid);
-	// public UserResponseDTO findUser(int uid);
-	public void registerUser(SignupDTO dto);
-	public UserModificationDTO modifyUser(UserModificationDTO user);
+    public AuthUserResponseDTO findUserForManagement(int uid);
+
+    // public UserResponseDTO findUser(int uid);
+    public void registerUser(SignupDTO dto);
+
+    public UserModificationDTO modifyUser(UserModificationDTO user);
 }

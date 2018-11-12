@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.jisang.security.core.authority.GrantedAuthorityMapper;
 import com.jisang.security.domain.Account;
 
-
 /**/
 /**
  * 
@@ -21,58 +20,58 @@ import com.jisang.security.domain.Account;
  *
  */
 public class DefaultUserDetails implements UserDetails {
-	
-	private static final long serialVersionUID = 8029129073998440460L;
-		
-	@Valid
-	@NotNull
-	private Account account;
-	
-	public DefaultUserDetails(Account account) {
-		this.account = account;
-	}
-	
-	public Account getAccount() {
-		return account;
-	}
-	
-	public void setAccount(Account account) {
-		this.account = account;
-	}
-	
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return GrantedAuthorityMapper.resolve(account.getRole()).mapToGrantedAuthority();					
-	}
 
-	@Override
-	public String getPassword() {
-		return account.getPassword();
-	}
+    private static final long serialVersionUID = 8029129073998440460L;
 
-	@Override
-	public String getUsername() {
-		return String.valueOf(account.getId());
-	}
+    @Valid
+    @NotNull
+    private Account account;
 
-	@Override
-	public boolean isAccountNonExpired() {
-		return true;
-	}
+    public DefaultUserDetails(Account account) {
+        this.account = account;
+    }
 
-	@Override
-	public boolean isAccountNonLocked() {
-		return true;
-	}
+    public Account getAccount() {
+        return account;
+    }
 
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
+    public void setAccount(Account account) {
+        this.account = account;
+    }
 
-	@Override
-	public boolean isEnabled() {
-		return true;
-	}
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return GrantedAuthorityMapper.resolve(account.getRole()).mapToGrantedAuthority();
+    }
+
+    @Override
+    public String getPassword() {
+        return account.getPassword();
+    }
+
+    @Override
+    public String getUsername() {
+        return String.valueOf(account.getId());
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 
 }

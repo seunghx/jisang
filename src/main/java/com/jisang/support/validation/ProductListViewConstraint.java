@@ -13,7 +13,8 @@ import com.jisang.dto.product.ProductListViewConfigData;
 
 /**
  * 
- * {@link ProductListViewConfigData} 클래스 오브젝트에 대한 프로퍼티 연관 관계 검증을 위해 사용될 validation 애노테이션이다.
+ * {@link ProductListViewConfigData} 클래스 오브젝트에 대한 프로퍼티 연관 관계 검증을 위해 사용될
+ * validation 애노테이션이다.
  * 
  * 
  * @author leeseunghyun
@@ -24,11 +25,13 @@ import com.jisang.dto.product.ProductListViewConfigData;
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ProductListViewConstraint {
-	String message() default "{ProductListViewConstraint.defaultMessage}";
-	
-	Class<?>[] groups() default {};
-	Class<? extends Payload>[] payload() default {};
-    
-	String viewType();
+    String message() default "{ProductListViewConstraint.defaultMessage}";
+
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
+
+    String viewType();
+
     String[] viewTypeArguments();
 }

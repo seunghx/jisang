@@ -10,15 +10,15 @@ package com.jisang.support;
  */
 public class NestedCommentException extends RuntimeException {
 
-	private static final long serialVersionUID = -7229378501620017258L;
+    private static final long serialVersionUID = -7229378501620017258L;
 
-	public NestedCommentException(String message) {
-		super(message);
-	}
-	
-	public NestedCommentException(String message, Throwable cause) {
-		this(message);
-		initCause(cause);
-	}
+    public NestedCommentException(String message) {
+        super(message);
+    }
+
+    public NestedCommentException(String message, Throwable cause) {
+        this(message);
+        initCause(cause);
+    }
 
 }

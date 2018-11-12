@@ -12,7 +12,6 @@ import com.jisang.security.exception.SecurityBadRequestException;
 import com.jisang.security.exception.SecurityUnsupportedLocaleException;
 import com.jisang.security.exception.PhonenumberFormatException;
 
-
 /**
  * 
  * 400 - Bad Request 응답 처리에 해당하는 예외를 처리하는 {@link SecurityExceptionHandler} 구현이다.
@@ -21,62 +20,62 @@ import com.jisang.security.exception.PhonenumberFormatException;
  *
  */
 public class BadRequestExceptionHandler extends AbstractSecurityExceptionHandler<SecurityBadRequestException> {
-		
-		// Static Fields
-		//==========================================================================================================================
 
-		/** 
-		 *  이 {@link SecurityExceptionHandler} 구현이 처리하는 예외에 해당하는 HTTP status 코드. 
-		 */
-		private static final int HTTP_STATUS_BAD_REQUEST = HttpStatus.BAD_REQUEST.value();
+    // Static Fields
+    // ==========================================================================================================================
 
-		
-		// Instance Fields
-		//==========================================================================================================================
+    /**
+     * 이 {@link SecurityExceptionHandler} 구현이 처리하는 예외에 해당하는 HTTP status 코드.
+     */
+    private static final int HTTP_STATUS_BAD_REQUEST = HttpStatus.BAD_REQUEST.value();
 
+    // Instance Fields
+    // ==========================================================================================================================
 
-		// Constructors
-		//==========================================================================================================================
+    // Constructors
+    // ==========================================================================================================================
 
-		
-		public BadRequestExceptionHandler(MessageSource msgSource) {
-			super(SecurityBadRequestException.class, msgSource);
-		}
+    public BadRequestExceptionHandler(MessageSource msgSource) {
+        super(SecurityBadRequestException.class, msgSource);
+    }
 
+    // Methods
+    // ==========================================================================================================================
 
-		// Methods
-		//==========================================================================================================================
+    @Override
+    public SecurityErrorDTO handle(SecurityBadRequestException e, Locale locale) {
+        Objects.requireNonNull(e);
 
-		@Override
-		public SecurityErrorDTO handle(SecurityBadRequestException e, Locale locale) {
-			Objects.requireNonNull(e);
-						
-			logger.error("Exception to be handled :", e);
+        logger.error("Exception to be handled :", e);
 
-			SecurityErrorDTO dto = new SecurityErrorDTO(HTTP_STATUS_BAD_REQUEST);
-			
-			if(e instanceof PhonenumberFormatException){
-				String phoneFieldName = ((PhonenumberFormatException) e).getPhoneNumberField();
-				String phoneNumber = ((PhonenumberFormatException) e).getPhoneNumber();
-				
-				dto.addDetail(phoneFieldName, phoneNumber);
-				dto.setMessage(msgSource.getMessage("response.exception.response.exception.InvalidPhonenumberFormatException", null, "Invalid phone number.", locale));
-			}else if(e instanceof BadRequestParameterDetectedException) {
-				String paramName = ((BadRequestParameterDetectedException)e).getParamName();
-				String paramValue = ((BadRequestParameterDetectedException)e).getParamValue();
-				
-				dto.addDetail(paramName, paramValue);
-				
-				dto.setMessage(msgSource.getMessage("response.exception.BadRequestParameterDetectedException", null, "Missing parameters : " + paramName, locale));			
-			}else if(e instanceof SecurityUnsupportedLocaleException) {
-				String localeField = ((SecurityUnsupportedLocaleException) e).getLocaleField();
-				Locale unsupportedLocale = ((SecurityUnsupportedLocaleException)e).getLocale();
-				
-				dto.addDetail(localeField, unsupportedLocale.toString());
-				dto.setMessage(msgSource.getMessage("response.exception.UnsupportedLocaleException.", null, "Unsupported Locale." ,locale));
-			}
-			
-			return dto;
-		}
+        SecurityErrorDTO dto = new SecurityErrorDTO(HTTP_STATUS_BAD_REQUEST);
+
+        if (e instanceof PhonenumberFormatException) {
+            String phoneFieldName = ((PhonenumberFormatException) e).getPhoneNumberField();
+            String phoneNumber = ((PhonenumberFormatException) e).getPhoneNumber();
+
+            dto.addDetail(phoneFieldName, phoneNumber);
+            dto.setMessage(
+                    msgSource.getMessage("response.exception.response.exception.InvalidPhonenumberFormatException",
+                            null, "Invalid phone number.", locale));
+        } else if (e instanceof BadRequestParameterDetectedException) {
+            String paramName = ((BadRequestParameterDetectedException) e).getParamName();
+            String paramValue = ((BadRequestParameterDetectedException) e).getParamValue();
+
+            dto.addDetail(paramName, paramValue);
+
+            dto.setMessage(msgSource.getMessage("response.exception.BadRequestParameterDetectedException", null,
+                    "Missing parameters : " + paramName, locale));
+        } else if (e instanceof SecurityUnsupportedLocaleException) {
+            String localeField = ((SecurityUnsupportedLocaleException) e).getLocaleField();
+            Locale unsupportedLocale = ((SecurityUnsupportedLocaleException) e).getLocale();
+
+            dto.addDetail(localeField, unsupportedLocale.toString());
+            dto.setMessage(msgSource.getMessage("response.exception.UnsupportedLocaleException.", null,
+                    "Unsupported Locale.", locale));
+        }
+
+        return dto;
+    }
 
 }

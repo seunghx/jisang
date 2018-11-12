@@ -11,9 +11,11 @@ import com.jisang.domain.Market;
  *
  */
 public interface MarketDAO extends MybatisMapper {
-	
-	public void create(Market market);
-	public Market read(int marketId);
-	public void update(Market market);
-	
+
+    public void create(Market market);
+
+    public Market read(int marketId);
+
+    public void update(Market market);
+
 }

@@ -7,73 +7,67 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.jisang.security.validation.JWTBuilding;
 import com.jisang.security.validation.JWTParsing;
 
-
-
 public class AuthenticationNumberTokenDTO implements TokenDTO {
 
-	
-	// Static Fields
-	//==========================================================================================================================
+    // Static Fields
+    // ==========================================================================================================================
 
-	
-	// Instance Fields 
-	//==========================================================================================================================
+    // Instance Fields
+    // ==========================================================================================================================
 
-	@JsonInclude(JsonInclude.Include.NON_EMPTY)
-	@NotBlank(groups= {JWTBuilding.class, JWTParsing.class})
-	private String clientIPAddr;
-	
-	@JsonInclude(JsonInclude.Include.NON_EMPTY)
-	@NotBlank(groups= {JWTBuilding.class, JWTParsing.class})
-	private String authenticationNumber;
-	
-	@JsonIgnore
-	@NotBlank(groups = {JWTParsing.class})
-	private String token;
-	
-	@JsonInclude(JsonInclude.Include.NON_EMPTY)
-	@NotBlank(groups= {JWTBuilding.class})
-	private String userEmail;
-	
-	
-	// Constructors
-	//==========================================================================================================================
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @NotBlank(groups = { JWTBuilding.class, JWTParsing.class })
+    private String clientIPAddr;
 
-	
-	// Methods
-	//==========================================================================================================================
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @NotBlank(groups = { JWTBuilding.class, JWTParsing.class })
+    private String authenticationNumber;
 
-	public String getUserEmail() {
-		return userEmail;
-	}
+    @JsonIgnore
+    @NotBlank(groups = { JWTParsing.class })
+    private String token;
 
-	public String getClientIPAddr() {
-		return clientIPAddr;
-	}
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @NotBlank(groups = { JWTBuilding.class })
+    private String userEmail;
 
-	public String getAuthenticationNumber() {
-		return authenticationNumber;
-	}
-	
-	@Override
-	public String getToken() {
-		return token;
-	}
+    // Constructors
+    // ==========================================================================================================================
 
-	public void setClientIPAddr(String clientIPAddr) {
-		this.clientIPAddr = clientIPAddr;
-	}
+    // Methods
+    // ==========================================================================================================================
 
-	public void setAuthenticationNumber(String authenticationNumber) {
-		this.authenticationNumber = authenticationNumber;
-	}
+    public String getUserEmail() {
+        return userEmail;
+    }
 
-	public void setToken(String token) {
-		this.token = token;
-	}
-	
-	public void setUserEmail(String userEmail) {
-		this.userEmail = userEmail;
-	}
+    public String getClientIPAddr() {
+        return clientIPAddr;
+    }
+
+    public String getAuthenticationNumber() {
+        return authenticationNumber;
+    }
+
+    @Override
+    public String getToken() {
+        return token;
+    }
+
+    public void setClientIPAddr(String clientIPAddr) {
+        this.clientIPAddr = clientIPAddr;
+    }
+
+    public void setAuthenticationNumber(String authenticationNumber) {
+        this.authenticationNumber = authenticationNumber;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
 
 }

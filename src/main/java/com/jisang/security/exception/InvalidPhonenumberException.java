@@ -10,31 +10,28 @@ import org.springframework.security.core.AuthenticationException;
  *
  */
 public class InvalidPhonenumberException extends AuthenticationException {
-	
-	// Static Fields
-	//==========================================================================================================================
-		
-	private static final long serialVersionUID = 3057079398385700842L;
-		
-		
-	// Instance Fields
-	//==========================================================================================================================
 
+    // Static Fields
+    // ==========================================================================================================================
 
-	// Constructors
-	//==========================================================================================================================
-		
-	public InvalidPhonenumberException(String message) {
-		super(message);
-	};
-		
-	public InvalidPhonenumberException(String message, Throwable cause) {
-		super(message);
-		initCause(cause);
-	}
-		
+    private static final long serialVersionUID = 3057079398385700842L;
 
-	// Methods
-	//==========================================================================================================================
+    // Instance Fields
+    // ==========================================================================================================================
+
+    // Constructors
+    // ==========================================================================================================================
+
+    public InvalidPhonenumberException(String message) {
+        super(message);
+    };
+
+    public InvalidPhonenumberException(String message, Throwable cause) {
+        super(message);
+        initCause(cause);
+    }
+
+    // Methods
+    // ==========================================================================================================================
 
 }

@@ -11,9 +11,10 @@ import com.jisang.dto.market.MarketManagementDTO.MarketModifyResponseDTO;
  *
  */
 public interface MarketService {
-	// 현재 지상 어플리케이션(와이어 프레임 상)에 존재하지 않는 기능.
-	//public MarketResponseDTO findMarket(int marketId);
-	
-	public MarketModifyResponseDTO findMarketForManagement(int managerId);
-	public MarketModifyResponseDTO modifyMarket(MarketModifyRequestDTO marketDTO);
+    // 현재 지상 어플리케이션(와이어 프레임 상)에 존재하지 않는 기능.
+    // public MarketResponseDTO findMarket(int marketId);
+
+    public MarketModifyResponseDTO findMarketForManagement(int managerId);
+
+    public MarketModifyResponseDTO modifyMarket(MarketModifyRequestDTO marketDTO);
 }
