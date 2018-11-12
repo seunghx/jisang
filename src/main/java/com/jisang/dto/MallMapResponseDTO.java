@@ -211,9 +211,9 @@ public class MallMapResponseDTO {
 
     @Override
     public String toString() {
-        return getClass().getName() + "[topLeftLAT=" + topLeftLAT + ", topLeftLNG=" + topLeftLNG + ", bottomRightLAT="
-                + bottomRightLAT + ", bottomRightLNG=" + bottomRightLNG + ", addressList=" + addressList
-                + ", marketMarkerIncluded=" + marketMarkerIncluded + "]";
+        return getClass().getName() + "[topLeftLAT=" + topLeftLAT + ", topLeftLNG=" + topLeftLNG 
+                                    + ", bottomRightLAT=" + bottomRightLAT + ", bottomRightLNG=" + bottomRightLNG 
+                                    + ", addressList=" + addressList + ", marketMarkerIncluded=" + marketMarkerIncluded + "]";
     }
 
 }

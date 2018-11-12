@@ -38,9 +38,6 @@ public class AuthenticationExceptionHandler extends AbstractSecurityExceptionHan
      */
     private static final int HTTP_STATUS_UNAUTHORIZED = HttpStatus.UNAUTHORIZED.value();
 
-    // Instance Fields
-    // ==========================================================================================================================
-
     // Constructors
     // ==========================================================================================================================
 
@@ -90,29 +87,29 @@ public class AuthenticationExceptionHandler extends AbstractSecurityExceptionHan
         SecurityErrorDTO dto = new SecurityErrorDTO(HTTP_STATUS_UNAUTHORIZED);
 
         if (e instanceof UsernameNotFoundException) {
-            dto.setMessage(msgSource.getMessage("security.excetpion.UsernameNotFoundException", null,
-                    "Invalid user id or password", locale));
+            dto.setMessage(msgSource.getMessage("security.excetpion.UsernameNotFoundException"
+                         , null, "Invalid user id or password", locale));
         } else if (e instanceof JWTAuthenticationException) {
-            dto.setMessage(msgSource.getMessage("security.exception.JWTAuthenticationException", null,
-                    "Untrustful JWT token. login required.", locale));
+            dto.setMessage(msgSource.getMessage("security.exception.JWTAuthenticationException"
+                         , null, "Untrustful JWT token. login required.", locale));
         } else if (e instanceof InvalidPhonenumberException) {
-            dto.setMessage(msgSource.getMessage("security.exception.BadCredentialsWithPhonenumberException", null,
-                    "Invalid user id or phone number", locale));
+            dto.setMessage(msgSource.getMessage("security.exception.BadCredentialsWithPhonenumberException"
+                         , null, "Invalid user id or phone number", locale));
         } else if (e instanceof BadCredentialsException) {
-            dto.setMessage(msgSource.getMessage("security.exception.BadCredentialsException", null,
-                    "Invalid user id or password", locale));
+            dto.setMessage(msgSource.getMessage("security.exception.BadCredentialsException"
+                         , null, "Invalid user id or password", locale));
         } else if (e instanceof InsufficientAuthenticationException) {
-            dto.setMessage(msgSource.getMessage("security.excetpion.InsufficientAuthenticationException", null,
-                    "Login required.", locale));
+            dto.setMessage(msgSource.getMessage("security.excetpion.InsufficientAuthenticationException"
+                         , null, "Login required.", locale));
         } else if (e instanceof AuthenticationCredentialsNotFoundException) {
-            dto.setMessage(msgSource.getMessage("security.exception.AuthenticationCredentialsNotFoundException", null,
-                    "Server error occurred", locale));
+            dto.setMessage(msgSource.getMessage("security.exception.AuthenticationCredentialsNotFoundException"
+                         , null , "Server error occurred", locale));
         } else if (e instanceof AuthenticationNumberExpiredException) {
-            dto.setMessage(msgSource.getMessage("security.exception.AuthenticationNumberExpiredExceptionException",
-                    null, "Time limit expired", locale));
+            dto.setMessage(msgSource.getMessage("security.exception.AuthenticationNumberExpiredExceptionException"
+                         , null, "Time limit expired", locale));
         } else {
-            logger.warn("Argument e must be direct subtype of AuthenticationException. But argument e : {}.",
-                    e.toString());
+            logger.warn("Argument e must be direct subtype of AuthenticationException. But argument e : {}."
+                      , e.toString());
             throw new IllegalArgumentException("Unknown exception argument detected.");
         }
         return dto;

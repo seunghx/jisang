@@ -10,9 +10,19 @@ package com.jisang.security.exception;
  */
 public class BadRequestParameterDetectedException extends SecurityBadRequestException {
 
+    // Static Fields
+    // ==========================================================================================================================
+
     private static final long serialVersionUID = 6473637003145014418L;
+    
+    // Instance Fields
+    // ==========================================================================================================================
+
     private String paramName;
     private String paramValue;
+
+    // Constructors
+    // ==========================================================================================================================
 
     public BadRequestParameterDetectedException(String msg) {
         super(msg);
@@ -23,6 +33,9 @@ public class BadRequestParameterDetectedException extends SecurityBadRequestExce
         this.paramName = paramName;
         this.paramValue = paramValue;
     }
+
+    // Methods 
+    // ==========================================================================================================================
 
     public String getParamName() {
         return paramName;

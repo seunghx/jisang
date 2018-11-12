@@ -26,9 +26,6 @@ public class ForbiddenSecurityExceptionHandler extends AbstractSecurityException
      */
     private static final int HTTP_STATUS_FORBIDDEN = HttpStatus.FORBIDDEN.value();
 
-    // Instance Fields
-    // ==========================================================================================================================
-
     // Constructors
     // ==========================================================================================================================
 
@@ -53,6 +50,7 @@ public class ForbiddenSecurityExceptionHandler extends AbstractSecurityException
         if (logger.isDebugEnabled()) {
             logger.debug("Handling AccessDeniedException...");
         }
+        
         logger.error("AccessDeniedException to be handled :", e);
 
         SecurityErrorDTO dto = new SecurityErrorDTO(HTTP_STATUS_FORBIDDEN);

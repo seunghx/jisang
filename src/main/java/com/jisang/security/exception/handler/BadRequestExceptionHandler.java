@@ -29,9 +29,6 @@ public class BadRequestExceptionHandler extends AbstractSecurityExceptionHandler
      */
     private static final int HTTP_STATUS_BAD_REQUEST = HttpStatus.BAD_REQUEST.value();
 
-    // Instance Fields
-    // ==========================================================================================================================
-
     // Constructors
     // ==========================================================================================================================
 
@@ -55,24 +52,23 @@ public class BadRequestExceptionHandler extends AbstractSecurityExceptionHandler
             String phoneNumber = ((PhonenumberFormatException) e).getPhoneNumber();
 
             dto.addDetail(phoneFieldName, phoneNumber);
-            dto.setMessage(
-                    msgSource.getMessage("response.exception.response.exception.InvalidPhonenumberFormatException",
-                            null, "Invalid phone number.", locale));
+            dto.setMessage(msgSource.getMessage("response.exception.response.exception.InvalidPhonenumberFormatException"
+                         , null, "Invalid phone number.", locale));
         } else if (e instanceof BadRequestParameterDetectedException) {
             String paramName = ((BadRequestParameterDetectedException) e).getParamName();
             String paramValue = ((BadRequestParameterDetectedException) e).getParamValue();
 
             dto.addDetail(paramName, paramValue);
 
-            dto.setMessage(msgSource.getMessage("response.exception.BadRequestParameterDetectedException", null,
-                    "Missing parameters : " + paramName, locale));
+            dto.setMessage(msgSource.getMessage("response.exception.BadRequestParameterDetectedException"
+                                              , null, "Missing parameters : " + paramName, locale));
         } else if (e instanceof SecurityUnsupportedLocaleException) {
             String localeField = ((SecurityUnsupportedLocaleException) e).getLocaleField();
             Locale unsupportedLocale = ((SecurityUnsupportedLocaleException) e).getLocale();
 
             dto.addDetail(localeField, unsupportedLocale.toString());
-            dto.setMessage(msgSource.getMessage("response.exception.UnsupportedLocaleException.", null,
-                    "Unsupported Locale.", locale));
+            dto.setMessage(msgSource.getMessage("response.exception.UnsupportedLocaleException."
+                         , null , "Unsupported Locale.", locale));
         }
 
         return dto;

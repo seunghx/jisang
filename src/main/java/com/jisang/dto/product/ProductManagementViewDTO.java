@@ -221,8 +221,8 @@ public class ProductManagementViewDTO {
 
         @Override
         public String toString() {
-            return super.toString() + ", representingImageUrl=" + representingImageUrl + ", imageUrls=" + imageUrls
-                    + "]";
+            return super.toString() + ", representingImageUrl=" + representingImageUrl 
+                                    + ", imageUrls=" + imageUrls + "]";
         }
     }
 

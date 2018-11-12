@@ -12,4 +12,7 @@ import org.mybatis.spring.annotation.MapperScan;
  */
 public interface SecurityMybatisMapper {
 
+    // Methods 
+    // ==========================================================================================================================
+
 }

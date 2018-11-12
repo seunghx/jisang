@@ -37,6 +37,9 @@ import com.jisang.support.NoSuchAddressException;
 @Service
 public class MarketServiceImpl implements MarketService {
 
+    // Instance Fields
+    // ==========================================================================================================================
+    
     private final Logger logger = LoggerFactory.getLogger(MarketServiceImpl.class);
 
     @Autowired
@@ -53,6 +56,9 @@ public class MarketServiceImpl implements MarketService {
     @Autowired
     @Qualifier("imageTrashCan")
     private List<String> imageTrashCan;
+
+    // Methods 
+    // ==========================================================================================================================
 
     /**
      * 
@@ -152,7 +158,7 @@ public class MarketServiceImpl implements MarketService {
         Objects.requireNonNull(marketDTO, "Null value argument marketDTO detected while trying to modify market info.");
 
         int marketId = validateManager(
-                Objects.requireNonNull(marketDTO, "Illegal state. marketDTO is null").getManagerId());
+                            Objects.requireNonNull(marketDTO, "Illegal state. marketDTO is null").getManagerId());
 
         logger.debug("Finding market id succeeded. market id : {}", marketId);
 
@@ -266,14 +272,14 @@ public class MarketServiceImpl implements MarketService {
 
             logger.info("Received non-existing address id.");
 
-            throw new NoSuchAddressException("Received address information does not exist.", modifyDTO.getAddress(),
-                    modifyDTO.getLocation());
+            throw new NoSuchAddressException("Received address information does not exist."
+                                            , modifyDTO.getAddress(), modifyDTO.getLocation());
         } else if (address.getMarket() != null && address.getMarket().getId() != modifyDTO.getId()) {
 
             logger.info("Received address is aleady used by other market.");
 
-            throw new AddressAleadyUsedException("Received address is used aleady.", modifyDTO.getAddress(),
-                    modifyDTO.getLocation());
+            throw new AddressAleadyUsedException("Received address is used aleady."
+                                               , modifyDTO.getAddress(), modifyDTO.getLocation());
         }
 
         logger.debug(

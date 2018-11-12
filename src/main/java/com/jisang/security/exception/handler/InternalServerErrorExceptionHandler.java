@@ -28,9 +28,6 @@ public abstract class InternalServerErrorExceptionHandler<T extends RuntimeExcep
 
     private static final int status = HttpStatus.INTERNAL_SERVER_ERROR.value();
 
-    // Instance Fields
-    // ==========================================================================================================================
-
     // Constructors
     // ==========================================================================================================================
 
@@ -62,11 +59,11 @@ public abstract class InternalServerErrorExceptionHandler<T extends RuntimeExcep
         logger.debug("Starting representing exceptionargument validation...");
 
         if (!(AuthenticationServiceException.class.isAssignableFrom(e)
-                || AuthorizationServiceException.class.isAssignableFrom(e))) {
+                                            || AuthorizationServiceException.class.isAssignableFrom(e))) {
             logger.warn("Invalid argument e detected.");
             logger.warn(
-                    "e must be subtype of AuthenticationServiceException or AuthorizationServiceExceptoin. but e : {}",
-                    e.toString());
+                    "e must be subtype of AuthenticationServiceException or AuthorizationServiceExceptoin. but e : {}"
+                  , e.toString());
             throw new IllegalArgumentException("Invalid exception type argument detected.");
         }
     }

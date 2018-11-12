@@ -21,9 +21,6 @@ import com.jisang.security.dto.TokenDTO;
  */
 public class JWTServiceResolver {
 
-    // Static Fields
-    // ==========================================================================================================================
-
     // Instance fields
     // ==========================================================================================================================
 
@@ -64,7 +61,11 @@ public class JWTServiceResolver {
         });
 
         try {
-            return jwtServices.stream().filter(jwtService -> jwtService.supports(tokenDTO)).findFirst().get();
+            return jwtServices.stream()
+                              .filter(jwtService -> jwtService.supports(tokenDTO))
+                              .findFirst()
+                              .get();
+            
         } catch (NoSuchElementException e) {
             logger.warn("Unsupported TokenDTO type argument detected. Argument tokenDTO : {}", tokenDTO);
 

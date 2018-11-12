@@ -147,18 +147,19 @@ public class JWTTokenAuthenticationFilter extends AbstractAuthenticationProcessi
             UserAuthTokenDTO tokenDTO = Optional.ofNullable(authentication)
                     .filter(auth -> auth instanceof UserAuthTokenDTOAuthentication)
                     .map(auth -> (UserAuthTokenDTO) auth.getPrincipal()).orElseThrow(() -> {
-                        logger.info("Argument authentication to be instance of {}. but authentication : {}",
-                                UserAuthTokenDTOAuthentication.class, authentication);
+                        logger.info("Argument authentication to be instance of {}. but authentication : {}"
+                                                        , UserAuthTokenDTOAuthentication.class, authentication);
                         return new IllegalAuthenticationProviderUsedException(
-                                "Argument authentication is not instance of TokenDTOBasedAuthentication.");
+                                        "Argument authentication is not instance of TokenDTOBasedAuthentication.");
                     });
 
             validator.validate(tokenDTO, JWTBasedUserAuthentication.class);
 
-            String jwt = jwtServiceResolver.resolveJWTService(tokenDTO.getClass()).buildToken(tokenDTO);
+            String jwt = jwtServiceResolver.resolveJWTService(tokenDTO.getClass())
+                                           .buildToken(tokenDTO);
 
             DefaultUserDetailsAuthentication userAuth = new DefaultUserDetailsAuthentication(
-                    new DefaultUserDetails(tokenDTO.getAccount()), true);
+                                                new DefaultUserDetails(tokenDTO.getAccount()), true);
 
             SecurityContext sc = SecurityContextHolder.createEmptyContext();
             sc.setAuthentication(userAuth);

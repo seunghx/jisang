@@ -76,9 +76,10 @@ public class Address {
 
     @Override
     public String toString() {
-        return getClass().getName() + "[id=" + id + ", location=" + location + ", market=" + market + ", topLeftLAT="
-                + topLeftLAT + ", topLeftLNG=" + topLeftLNG + ", bottomRightLAT=" + bottomRightLAT + ", bottomRightLNG="
-                + bottomRightLNG + "]";
+        return getClass().getName() + "[id=" + id + ", location=" + location + ", market=" + market 
+                                    + ", topLeftLAT=" + topLeftLAT + ", topLeftLNG=" + topLeftLNG 
+                                    + ", bottomRightLAT=" + bottomRightLAT 
+                                    + ", bottomRightLNG=" + bottomRightLNG + "]";
     }
 
 }

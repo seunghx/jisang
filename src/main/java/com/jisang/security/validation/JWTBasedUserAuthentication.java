@@ -10,4 +10,7 @@ package com.jisang.security.validation;
  */
 public interface JWTBasedUserAuthentication extends UserAuthentication {
 
+    // Methods 
+    // ==========================================================================================================================
+
 }

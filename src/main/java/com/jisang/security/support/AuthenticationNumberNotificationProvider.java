@@ -10,6 +10,9 @@ package com.jisang.security.support;
  */
 public interface AuthenticationNumberNotificationProvider {
 
+    // Methods
+    // ==========================================================================================================================
+
     /**
      * 
      * @param destination

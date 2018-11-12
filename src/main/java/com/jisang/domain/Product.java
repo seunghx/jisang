@@ -130,9 +130,9 @@ public class Product {
     @Override
     public String toString() {
         return getClass().getName() + "[id= " + id + ", category=" + category + ", name=" + name + ", price=" + price
-                + ", detail=" + detail + ", marketId=" + marketId + ", uploadTime=" + uploadTime
-                + ", representingImage=" + representingImageUrl + ", image=" + imageUrls + ", hashTags=" + hashTags
-                + ", recommended=" + recommended + "]";
+                                    + ", detail=" + detail + ", marketId=" + marketId + ", uploadTime=" + uploadTime
+                                    + ", representingImage=" + representingImageUrl + ", image=" + imageUrls 
+                                    + ", hashTags=" + hashTags + ", recommended=" + recommended + "]";
     }
 
 }

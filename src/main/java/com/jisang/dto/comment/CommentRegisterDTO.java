@@ -65,7 +65,7 @@ public class CommentRegisterDTO {
     @Override
     public String toString() {
         return getClass().getName() + "[userId=" + userId + "productId=" + productId + ", parentId=" + parentId
-                + ", content=" + content + "]";
+                                    + ", content=" + content + "]";
     }
 
 }

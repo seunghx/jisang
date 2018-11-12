@@ -16,10 +16,17 @@ import com.jisang.support.NoSuchMarketException;
 @Service
 public class BookMarkServiceImpl implements BookMarkService {
 
+
+    // Instance Fields
+    // ==========================================================================================================================
+
     private final Logger logger = LoggerFactory.getLogger(BookMarkServiceImpl.class);
 
     @Autowired
     private BookMarkDAO bookMarkDAO;
+
+    // Methods 
+    // ==========================================================================================================================
 
     @Override
     public boolean isBookMarked(BookMarkInfoDTO bookMarkInfo) {

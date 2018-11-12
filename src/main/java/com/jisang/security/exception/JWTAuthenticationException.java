@@ -9,9 +9,6 @@ public class JWTAuthenticationException extends AuthenticationException {
 
     private static final long serialVersionUID = -1284357512993258305L;
 
-    // Instance Fields
-    // ==========================================================================================================================
-
     // Constructors
     // ==========================================================================================================================
 

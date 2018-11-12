@@ -23,13 +23,7 @@ import com.jisang.security.dto.SecurityErrorDTO;
  * 
  */
 public class AuthorizationServiceExceptionHandler
-        extends InternalServerErrorExceptionHandler<AuthorizationServiceException> {
-
-    // Static Fields
-    // ==========================================================================================================================
-
-    // Instance Fields
-    // ==========================================================================================================================
+                                extends InternalServerErrorExceptionHandler<AuthorizationServiceException> {
 
     // Constructors
     // ==========================================================================================================================

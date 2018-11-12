@@ -41,9 +41,6 @@ import com.jisang.security.service.JWTServiceResolver;
  */
 public class TemporaryPasswordAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-    // Static Fields
-    // ==========================================================================================================================
-
     // Instance Fields
     // ==========================================================================================================================
 
@@ -91,8 +88,9 @@ public class TemporaryPasswordAuthenticationFilter extends AbstractAuthenticatio
         tokenDTO.setToken(jwt);
         tokenDTO.setClientIPAddr(request.getRemoteAddr());
 
-        return new AnonymousUserAuthentication((AnonymousUserAuthTokenDTO) jwtServiceResolver
-                .resolveJWTService(tokenDTO.getClass()).parseToken(tokenDTO));
+        return new AnonymousUserAuthentication(
+                             (AnonymousUserAuthTokenDTO)jwtServiceResolver.resolveJWTService(tokenDTO.getClass())
+                                                                          .parseToken(tokenDTO));
 
     }
 

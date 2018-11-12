@@ -20,7 +20,14 @@ import org.springframework.stereotype.Component;
 @Order(1)
 @Component
 public class MethodLoggingAspect {
+
+    // Instance Fields
+    // ==========================================================================================================================
+
     private final Logger logger = LoggerFactory.getLogger(MethodLoggingAspect.class);
+
+    // Methods
+    // ==========================================================================================================================
 
     @Around("execution(* com.jisang..*.*(..)) && !execution(* com.jisang.security..*.*(..))"
             + " && !execution(* com.jisang.config..*.*(..))" + " && !execution(* com.jisang.persistence..*.*(..))"

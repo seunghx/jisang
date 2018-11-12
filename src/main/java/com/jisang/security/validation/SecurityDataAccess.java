@@ -11,4 +11,7 @@ package com.jisang.security.validation;
  */
 public interface SecurityDataAccess extends UserAuthentication {
 
+    // Methods 
+    // ==========================================================================================================================
+
 }

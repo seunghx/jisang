@@ -174,17 +174,19 @@ public class PageViewCriteria extends ProductListViewCriteria {
             PageViewCriteria criteria = new PageViewCriteria(this);
 
             if (criteria.pageIndex <= 0) {
-                logger.error("Invalid argument pageIndex detected : {}. pageIndex must not be zero or negative value.",
-                        pageIndex);
+                logger.error("Invalid argument pageIndex detected : {}. pageIndex must not be zero or negative value."
+                           , pageIndex);
                 logger.error(
-                        "Because arguent pageIndex passed to bean validation, It must be caused by illegal code. Checking illegal code required.");
+                          "Because arguent pageIndex passed to bean validation, It must be caused by illegal code. "
+                        + "Checking illegal code required.");
                 throw new IllegalStateException("Invalid argument pageIndex detected.");
             } else if (criteria.perPageCnt != null && criteria.perPageCnt <= 0) {
                 logger.error(
-                        "Invalid argument perPageCnt detected : {}. perPageCnt must not be zero or negative value.",
-                        perPageCnt);
+                            "Invalid argument perPageCnt detected : {}. perPageCnt must not be zero or negative value."
+                            , perPageCnt);
                 logger.error(
-                        "Because arguent perPageCnt passed to bean validation, It must be caused by illegal code. Checking illegal code required.");
+                        "Because arguent perPageCnt passed to bean validation, It must be caused by illegal code. "
+                      + "Checking illegal code required.");
                 throw new IllegalStateException("Invalid argument perPageCnt detected.");
             } /*
                * else if(criteria.displayPageCnt <= 0) { logger.
@@ -202,9 +204,8 @@ public class PageViewCriteria extends ProductListViewCriteria {
 
     @Override
     public String toString() {
-        return super.toString() + "[pageIndex=" + pageIndex + ", perPageCnt=" + perPageCnt + ", totalProductCnt="
-                + totalProductCnt
-                // + ", displayPageCnt=" + displayPageCnt
-                + "]";
+        return super.toString() + "[pageIndex=" + pageIndex + ", perPageCnt=" + perPageCnt 
+                                + ", totalProductCnt=" + totalProductCnt // + ", displayPageCnt=" + displayPageCnt 
+                                + "]";
     }
 }

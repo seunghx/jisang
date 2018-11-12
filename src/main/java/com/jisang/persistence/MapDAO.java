@@ -26,8 +26,8 @@ public interface MapDAO extends MybatisMapper {
      * ({@link Address} 클래스에서 바뀌는 정보는 마켓의 id밖에 없다.)
      * 
      */
-    public void updateAddressMarketId(@Param("address") String address, @Param("location") String location,
-            @Param("marketId") int marketId);
+    public void updateAddressMarketId(@Param("address") String address, @Param("location") String location
+                                    , @Param("marketId") int marketId);
 
     /**
      * 
@@ -47,16 +47,16 @@ public interface MapDAO extends MybatisMapper {
      * 
      * 
      */
-    public void updateAddressMarketIdByOlderMarketId(@Param("olderMarketId") int olderMarketId,
-            @Param("newMarketId") Integer newMarketId);
+    public void updateAddressMarketIdByOlderMarketId(@Param("olderMarketId") int olderMarketId
+                                                   , @Param("newMarketId") Integer newMarketId);
 
     /**
      * 지하 상가 내 위치 정보, 예를 들어 'A-1'과 같은 주소 체계는 다른 지하상가의 주소 체계와 중복될 가능성이 있다. 그러므로
      * {@link Address}를 유일하게 식별하기 위해 {@code address} 뿐만 아니라 {@code location} 정보도 함께
      * 전달되어야 한다.
      */
-    public Address readAddressByAddressIdAndLocation(@Param("address") String address,
-            @Param("location") String location);
+    public Address readAddressByAddressIdAndLocation(@Param("address") String address
+                                                   , @Param("location") String location);
 
     public Address readAddressByMarketId(int marketId);
 

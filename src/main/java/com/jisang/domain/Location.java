@@ -76,7 +76,7 @@ public class Location {
     @Override
     public String toString() {
         return getClass().getName() + "[id=" + id + ", topLeftLAT=" + topLeftLAT + ", topLeftLNG=" + topLeftLNG
-                + ", bottomRightLAT=" + bottomRightLAT + ", bottomRightLNG=" + bottomRightLNG + ", addressList="
-                + addressList + "]";
+                                    + ", bottomRightLAT=" + bottomRightLAT + ", bottomRightLNG=" + bottomRightLNG 
+                                    + ", addressList=" + addressList + "]";
     }
 }

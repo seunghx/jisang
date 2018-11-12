@@ -29,9 +29,6 @@ import com.jisang.security.dto.SecurityErrorDTO;
  */
 public interface SecurityExceptionHandler<T extends RuntimeException> {
 
-    // Static Fields
-    // ==========================================================================================================================
-
     // Methods
     // ==========================================================================================================================
 

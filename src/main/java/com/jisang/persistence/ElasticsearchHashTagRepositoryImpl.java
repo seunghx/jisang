@@ -22,6 +22,9 @@ import com.jisang.domain.HashTag;
 
 public class ElasticsearchHashTagRepositoryImpl implements ElasticsearchHashTagRepository {
 
+    // Instance Fields
+    // ==========================================================================================================================
+
     private final Logger logger = LoggerFactory.getLogger(ElasticsearchHashTagRepositoryImpl.class);
 
     @Autowired
@@ -29,29 +32,33 @@ public class ElasticsearchHashTagRepositoryImpl implements ElasticsearchHashTagR
     @Autowired
     private ElasticsearchTemplate esTemplate;
 
+    // Methods
+    // ==========================================================================================================================
+
     @Override
     public void deleteAllByProductId(int productId) {
         DeleteByQueryRequestBuilder builder = DeleteByQueryAction.INSTANCE.newRequestBuilder(transportClient);
 
-        builder.filter(QueryBuilders.termQuery("productId", productId)).source("product")
-                .execute(new ActionListener<BulkByScrollResponse>() {
+        builder.filter(QueryBuilders.termQuery("productId", productId))
+               .source("product")
+               .execute(new ActionListener<BulkByScrollResponse>() {
 
                     @Override
                     public void onResponse(BulkByScrollResponse response) {
                         long deletedNum = response.getDeleted();
 
-                        logger.info("Deleting hashtags for product id {} of index {} succeeded from Elasticsearch.",
-                                productId, "product");
+                        logger.info("Deleting hashtags for product id {} of index {} succeeded from Elasticsearch."
+                                  , productId, "product");
                         logger.info("Deleted hashtags number : {}.", deletedNum);
                     }
 
                     @Override
                     public void onFailure(Exception e) {
-                        logger.error("An Exception occurred while trying to delete hashtags. Exception : {}",
-                                e.toString());
+                        logger.error("An Exception occurred while trying to delete hashtags. Exception : {}"
+                                   , e.toString());
                         logger.error(
-                                "Manual deletion required. Hashtags must be deleted : product id : {} of index {}.",
-                                productId, "product");
+                                "Manual deletion required. Hashtags must be deleted : product id : {} of index {}."
+                              , productId, "product");
                         throw new ElasticsearchException("Deleting hashtags from elasticsearch failed.", e);
                     }
                 });

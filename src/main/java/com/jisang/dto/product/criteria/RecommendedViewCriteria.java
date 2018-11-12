@@ -27,17 +27,18 @@ public class RecommendedViewCriteria extends ProductListViewCriteria {
         private static final Logger logger = LoggerFactory.getLogger(RecommendedViewCriteriaBuilder.class);
         private final int recommendedViewCnt;
 
-        public RecommendedViewCriteriaBuilder(Integer marketId, String mallLocation, String category,
-                int recommendedViewCnt) {
+        public RecommendedViewCriteriaBuilder(Integer marketId, String mallLocation
+                                            , String category, int recommendedViewCnt) {
             super(marketId, mallLocation, category);
             this.recommendedViewCnt = recommendedViewCnt;
 
             if (this.recommendedViewCnt <= 0) {
                 logger.error(
-                        "Invalid argument recommendedViewCnt detected : {}. bestViewCnt must not be zero or negative value.",
-                        recommendedViewCnt);
+                        "Invalid argument recommendedViewCnt detected : {}. bestViewCnt must not be zero or negative value."
+                     ,  recommendedViewCnt);
                 logger.error(
-                        "Because arguent recommendedViewCnt passed to bean validation, It must be caused by illegal code. Checking illegal code required.");
+                        "Because arguent recommendedViewCnt passed to bean validation, It must be caused by illegal code."
+                      + "Checking illegal code required.");
                 throw new IllegalStateException("Invalid argument recommendedViewCnt detected.");
             }
         }

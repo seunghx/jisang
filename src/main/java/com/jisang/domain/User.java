@@ -90,8 +90,8 @@ public class User {
 
     @Override
     public String toString() {
-        return this.getClass().getName() + "[email=" + email + ", password=" + password + ", role=" + role + ", name="
-                + name + ", phone=" + phone + "]";
+        return this.getClass().getName() + "[email=" + email + ", password=" + password + ", role=" + role 
+                                         + ", name=" + name + ", phone=" + phone + "]";
     }
 
 }

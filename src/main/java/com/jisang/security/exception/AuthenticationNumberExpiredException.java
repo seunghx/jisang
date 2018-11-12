@@ -22,9 +22,6 @@ public class AuthenticationNumberExpiredException extends AuthenticationExceptio
 
     private static final long serialVersionUID = -6517124792432679902L;
 
-    // Instance Fields
-    // ==========================================================================================================================
-
     // Constructors
     // ==========================================================================================================================
 

@@ -73,8 +73,9 @@ public class Comment {
 
     @Override
     public String toString() {
-        return getClass().getName() + "[id=" + id + ", userId=" + userId + ", productId=" + productId + ", parentId="
-                + parentId + ", content=" + content + ", uploadTime=" + uploadTime + "]";
+        return getClass().getName() + "[id=" + id + ", userId=" + userId + ", productId=" + productId 
+                                    + ", parentId=" + parentId + ", content=" + content 
+                                    + ", uploadTime=" + uploadTime + "]";
     }
 
 }

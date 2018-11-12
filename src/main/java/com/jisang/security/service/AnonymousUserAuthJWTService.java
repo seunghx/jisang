@@ -25,10 +25,6 @@ public class AnonymousUserAuthJWTService extends AbstractJWTService {
 
     @Value("${jwt.token.authenticated-token.ttl}")
     private long authenticatedTokenTTL;
-
-    // Constructors
-    // ==========================================================================================================================
-
     // Methods
     // ==========================================================================================================================
 
@@ -51,7 +47,7 @@ public class AnonymousUserAuthJWTService extends AbstractJWTService {
         AnonymousUserAuthTokenDTO anonymousAuthTokenDTO = (AnonymousUserAuthTokenDTO) tokenDTO;
 
         return parser.require(CLIENT_IP_CLAIM_NAME, anonymousAuthTokenDTO.getClientIPAddr())
-                .require(AUTHENTICATED_CLAIM_NAME, true);
+                     .require(AUTHENTICATED_CLAIM_NAME, true);
     }
 
     /**
@@ -70,7 +66,7 @@ public class AnonymousUserAuthJWTService extends AbstractJWTService {
     @Override
     public boolean supports(Class<? extends TokenDTO> tokenDTO) {
         Objects.requireNonNull(tokenDTO,
-                "Null value parameter tokenDTO detected while trying to check where can support or not.");
+                    "Null value parameter tokenDTO detected while trying to check where can support or not.");
 
         return AnonymousUserAuthTokenDTO.class.isAssignableFrom(tokenDTO);
     }

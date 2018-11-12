@@ -81,7 +81,7 @@ public class CommentResponseDTO {
     @Override
     public String toString() {
         return getClass().getName() + "[commentId=" + commentId + ", content=" + content + ", userName=" + userName
-                + ", uploadTime=" + uploadTime + "]";
+                                    + ", uploadTime=" + uploadTime + "]";
     }
 
 }

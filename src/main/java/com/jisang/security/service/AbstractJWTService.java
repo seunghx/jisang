@@ -161,13 +161,15 @@ public abstract class AbstractJWTService implements JWTService {
             logger.debug("Resolving compression codec...");
         }
         String codecNameUpperCase = codecName.toUpperCase();
+        
         switch (codecNameUpperCase) {
-        case "DEFLATE":
-            return CompressionCodecs.DEFLATE;
-        case "GZIP":
-            return CompressionCodecs.GZIP;
-        default:
-            throw new InternalAuthenticationServiceException("Unsupported JWT compression codec name : " + codecName);
+            case "DEFLATE":
+                return CompressionCodecs.DEFLATE;
+            case "GZIP":
+                return CompressionCodecs.GZIP;
+            default:
+                throw new InternalAuthenticationServiceException("Unsupported JWT compression codec name : " 
+                                                                                                    + codecName);
         }
     }
 

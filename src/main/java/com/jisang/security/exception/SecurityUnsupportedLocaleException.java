@@ -4,10 +4,19 @@ import java.util.Locale;
 
 public class SecurityUnsupportedLocaleException extends SecurityBadRequestException {
 
+    // Static Fiedls
+    // ==========================================================================================================================
+
     private static final long serialVersionUID = -8512723981080667609L;
     private static final String LOCALE_FIELD = "locale";
 
+    // Instance Fields
+    // ==========================================================================================================================
+
     private Locale locale;
+
+    // Constructors
+    // ==========================================================================================================================
 
     public SecurityUnsupportedLocaleException(String msg) {
         super(msg);
@@ -21,6 +30,9 @@ public class SecurityUnsupportedLocaleException extends SecurityBadRequestExcept
         super(msg, cause);
         this.locale = locale;
     }
+
+    // Methods 
+    // ==========================================================================================================================
 
     public String getLocaleField() {
         return LOCALE_FIELD;

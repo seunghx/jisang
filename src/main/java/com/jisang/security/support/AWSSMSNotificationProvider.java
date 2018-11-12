@@ -29,12 +29,19 @@ import com.amazonaws.services.sns.model.PublishResult;
  */
 @Component
 public class AWSSMSNotificationProvider implements AuthenticationNumberNotificationProvider {
+
+    // Instance Fields
+    // ==========================================================================================================================
+
     private final Logger logger = LoggerFactory.getLogger(AWSSMSNotificationProvider.class);
 
     @Autowired
     private AmazonSNS snsClient;
     @Autowired
     private MessageSource msgSource;
+
+    // Methods 
+    // ==========================================================================================================================
 
     /**
      *
@@ -60,12 +67,13 @@ public class AWSSMSNotificationProvider implements AuthenticationNumberNotificat
                     "Illegal argument detected. Argument authenticationNumber must not be empty String.");
         }
 
-        String message = msgSource.getMessage("sms.authentication-number.message",
-                new String[] { authenticationNumber }, Locale.getDefault());
+        String message = msgSource.getMessage("sms.authentication-number.message"
+                                            , new String[] { authenticationNumber }
+                                            , Locale.getDefault());
 
         try {
-            PublishResult result = snsClient
-                    .publish(new PublishRequest().withMessage(message).withPhoneNumber(destination));
+            PublishResult result =
+                    snsClient.publish(new PublishRequest().withMessage(message).withPhoneNumber(destination));
 
             logger.info("{} returned {}", snsClient, result);
 

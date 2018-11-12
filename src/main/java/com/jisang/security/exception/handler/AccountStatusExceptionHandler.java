@@ -38,9 +38,6 @@ public class AccountStatusExceptionHandler extends AbstractSecurityExceptionHand
      */
     private static final int HTTP_STATUS_UNAUTHORIZED = HttpStatus.UNAUTHORIZED.value();
 
-    // Instance Fields
-    // ==========================================================================================================================
-
     // Constructors
     // ==========================================================================================================================
 

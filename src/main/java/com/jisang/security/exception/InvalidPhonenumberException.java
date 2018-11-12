@@ -16,9 +16,6 @@ public class InvalidPhonenumberException extends AuthenticationException {
 
     private static final long serialVersionUID = 3057079398385700842L;
 
-    // Instance Fields
-    // ==========================================================================================================================
-
     // Constructors
     // ==========================================================================================================================
 
@@ -30,8 +27,5 @@ public class InvalidPhonenumberException extends AuthenticationException {
         super(message);
         initCause(cause);
     }
-
-    // Methods
-    // ==========================================================================================================================
 
 }

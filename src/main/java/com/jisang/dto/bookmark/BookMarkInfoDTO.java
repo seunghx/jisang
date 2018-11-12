@@ -62,7 +62,7 @@ public class BookMarkInfoDTO {
     @Override
     public String toString() {
         return getClass().getName() + "[userId=" + userId + ", marketId=" + marketId + ", marketName=" + marketName
-                + ", marketLocation=" + marketLocation + "]";
+                                    + ", marketLocation=" + marketLocation + "]";
     }
 
 }

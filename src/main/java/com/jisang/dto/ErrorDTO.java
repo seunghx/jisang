@@ -15,20 +15,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  */
 public class ErrorDTO {
 
-    // Static Fields
-    // ==========================================================================================================================
-
-    // Instance Fields
-    // ==========================================================================================================================
-
     private int status;
     private String message;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private final List<Detail> details = new ArrayList<>();
-
-    // Constructors
-    // ==========================================================================================================================
 
     public ErrorDTO() {
     }
@@ -37,9 +28,6 @@ public class ErrorDTO {
         this.status = status;
         this.message = message;
     }
-
-    // Methods
-    // ==========================================================================================================================
 
     public int getStatus() {
         return status;
@@ -65,9 +53,6 @@ public class ErrorDTO {
     public List<Detail> getDetails() {
         return details;
     }
-
-    // Methods
-    // ==========================================================================================================================
 
     /**
      * 

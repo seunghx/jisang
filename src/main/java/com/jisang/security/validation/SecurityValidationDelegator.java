@@ -29,10 +29,17 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class SecurityValidationDelegator {
+
+    // Instance Fields
+    // ==========================================================================================================================
+
     private final Logger logger = LoggerFactory.getLogger(SecurityValidationDelegator.class);
 
     @Autowired
     protected Validator validator;
+
+    // Methods 
+    // ==========================================================================================================================
 
     public <T> void validate(T obj, Class<?>... groups) {
         Optional.ofNullable(obj).orElseThrow(() -> new InternalAuthenticationServiceException("Argument obj is null."));
@@ -49,8 +56,9 @@ public class SecurityValidationDelegator {
                 for (ConstraintViolation<T> violation : constraintViolations) {
                     logger.info("Violation occurred at {}", violation.getPropertyPath());
                     logger.info("Constraint message = {}", violation.getMessage());
-                    logger.info("Annotation type = {}",
-                            violation.getConstraintDescriptor().getAnnotation().annotationType());
+                    logger.info("Annotation type = {}", violation.getConstraintDescriptor()
+                                                                 .getAnnotation()
+                                                                 .annotationType());
                     logger.info("Detected invalid value = {}", violation.getInvalidValue());
                 }
             }

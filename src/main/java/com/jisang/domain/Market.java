@@ -91,7 +91,7 @@ public class Market {
 
     @Override
     public String toString() {
-        return this.getClass().getName() + "[id=" + id + ", location=" + location + ", name=" + name + ", imageUrl="
-                + imageUrl + ", products =" + products + "]";
+        return this.getClass().getName() + "[id=" + id + ", location=" + location + ", name=" + name 
+                                         + ", imageUrl=" + imageUrl + ", products =" + products + "]";
     }
 }

@@ -24,16 +24,7 @@ import com.jisang.security.dto.SecurityErrorDTO;
  * 
  */
 public class AuthenticationServiceExceptionHandler
-        extends InternalServerErrorExceptionHandler<AuthenticationServiceException> {
-
-    // Static Fields
-    // ==========================================================================================================================
-
-    // Instance Fields
-    // ==========================================================================================================================
-
-    // Constructors
-    // ==========================================================================================================================
+                            extends InternalServerErrorExceptionHandler<AuthenticationServiceException> {
 
     // Methods
     // ==========================================================================================================================

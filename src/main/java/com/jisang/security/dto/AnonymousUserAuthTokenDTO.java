@@ -7,9 +7,6 @@ import com.jisang.security.validation.JWTParsing;
 
 public class AnonymousUserAuthTokenDTO implements TokenDTO {
 
-    // Static Fields
-    // ==========================================================================================================================
-
     // Instance Fields
     // ==========================================================================================================================
 
@@ -23,9 +20,6 @@ public class AnonymousUserAuthTokenDTO implements TokenDTO {
     private String userEmail;
 
     private boolean authenticated;
-
-    // Constructors
-    // ==========================================================================================================================
 
     // Methods
     // ==========================================================================================================================

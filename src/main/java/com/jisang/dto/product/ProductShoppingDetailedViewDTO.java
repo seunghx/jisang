@@ -98,9 +98,11 @@ public class ProductShoppingDetailedViewDTO {
 
     @Override
     public String toString() {
-        return getClass().getName() + "[marketId=" + marketId + ", marketName=" + marketName + ", productId="
-                + productId + ", productName=" + productName + ", price=" + price + ", detail=" + detail
-                + ", representingImageUrl=" + representingImageUrl + ", imageUrls=" + imageUrls + "]";
+        return getClass().getName() + "[marketId=" + marketId + ", marketName=" + marketName 
+                                    + ", productId=" + productId + ", productName=" + productName 
+                                    + ", price=" + price + ", detail=" + detail
+                                    + ", representingImageUrl=" + representingImageUrl 
+                                    + ", imageUrls=" + imageUrls + "]";
     }
 
 }

@@ -25,7 +25,7 @@ package com.jisang.dto.product.criteria;
  *
  */
 public class ProductListViewCriteria {
-
+    
     private final Integer marketId;
     private final String mallLocation;
     private final String category;
@@ -74,8 +74,8 @@ public class ProductListViewCriteria {
 
     @Override
     public String toString() {
-        return getClass().getName() + "[marketId=" + marketId + ", mallLocation=" + mallLocation + ", category="
-                + category + ", searchKeyword=" + searchKeyword;
+        return getClass().getName() + "[marketId=" + marketId + ", mallLocation=" + mallLocation 
+                                    + ", category=" + category + ", searchKeyword=" + searchKeyword + "]";
     }
 
 }

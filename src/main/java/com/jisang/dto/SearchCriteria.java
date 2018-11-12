@@ -24,7 +24,9 @@ import com.jisang.service.product.ProductService;
  */
 public class SearchCriteria {
 
-    @ApiModelProperty(notes = "검색 키워드.", name = "keyword", value = "해시태그 검색 보기의 경우 검색할 해시태그를 입력한다. 후에 추가 될 상품 이름 검색 기능의 경우에는 검색할 상품 이름을 지정하면 된다.")
+    @ApiModelProperty(notes = "검색 키워드.", name = "keyword"
+                    , value = "해시태그 검색 보기의 경우 검색할 해시태그를 입력한다. "
+                            + "후에 추가 될 상품 이름 검색 기능의 경우에는 검색할 상품 이름을 지정하면 된다.")
     @NotBlank(message = "검색 키워드를 입력하세요.")
     private String keyword;
 

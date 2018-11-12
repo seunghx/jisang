@@ -40,9 +40,6 @@ public class AuthenticationNumberJWTService extends AbstractJWTService {
     @Value("${jwt.token.authentication-number.ttl}")
     private long authenticationNumberTTL;
 
-    // Constructors
-    // ==========================================================================================================================
-
     // Methods
     // ==========================================================================================================================
 
@@ -75,7 +72,8 @@ public class AuthenticationNumberJWTService extends AbstractJWTService {
     protected Claims getClaims(TokenDTO tokenDTO) {
         AuthenticationNumberTokenDTO authNumberTokenDTO = (AuthenticationNumberTokenDTO) tokenDTO;
 
-        Claims claims = Jwts.claims().setExpiration(Date.from(Instant.now().plusSeconds(authenticationNumberTTL)));
+        Claims claims = Jwts.claims()
+                            .setExpiration(Date.from(Instant.now().plusSeconds(authenticationNumberTTL)));
 
         claims.put(CLIENT_IP_CLAIM_NAME, authNumberTokenDTO.getClientIPAddr());
         claims.put(AUTH_NUMBER_CLAIM_NAME, authNumberTokenDTO.getAuthenticationNumber());
@@ -91,8 +89,10 @@ public class AuthenticationNumberJWTService extends AbstractJWTService {
      */
     @Override
     protected JwtParser initValidationStrategy(JwtParser parser, TokenDTO tokenDTO) {
-        return parser.require(CLIENT_IP_CLAIM_NAME, ((AuthenticationNumberTokenDTO) tokenDTO).getClientIPAddr())
-                .require(AUTH_NUMBER_CLAIM_NAME, ((AuthenticationNumberTokenDTO) tokenDTO).getAuthenticationNumber());
+        return parser.require(CLIENT_IP_CLAIM_NAME
+                            , ((AuthenticationNumberTokenDTO) tokenDTO).getClientIPAddr())
+                     .require(AUTH_NUMBER_CLAIM_NAME
+                            , ((AuthenticationNumberTokenDTO) tokenDTO).getAuthenticationNumber());
 
     }
 

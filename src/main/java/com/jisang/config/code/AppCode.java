@@ -11,6 +11,10 @@ package com.jisang.config.code;
  *
  */
 public interface AppCode {
+    
+    // Methods
+    // ==========================================================================================================================
+    
     /**
      * for JSON serialization
      */

@@ -34,6 +34,9 @@ import com.jisang.support.NoSuchProductException;
 @Service
 public class CommentServiceImpl implements CommentService {
 
+    // Instance Fields
+    // ==========================================================================================================================
+
     private final Logger logger = LoggerFactory.getLogger(CommentServiceImpl.class);
 
     @Autowired
@@ -42,6 +45,9 @@ public class CommentServiceImpl implements CommentService {
     private CommentDAO commentDAO;
     @Autowired
     private UserDAO userDAO;
+
+    // Methods
+    // ==========================================================================================================================
 
     /**
      * 
@@ -118,25 +124,28 @@ public class CommentServiceImpl implements CommentService {
             commentMap.put(comment.getId(), commentDTO);
         });
 
-        commentList.stream().filter(comment -> comment.getParentId() != 0).forEach(child -> {
-            CommentResponseDTO parent = commentMap.get(child.getParentId());
+        commentList.stream()
+                   .filter(comment -> comment.getParentId() != 0)
+                   .forEach(child -> {
+                       CommentResponseDTO parent = commentMap.get(child.getParentId());
 
-            if (parent == null) {
-                logger.error("Illegal state related to self reference of comment table in RDB, detected.");
-                logger.error("Invalid parent comment id does not allowed by comment registering method of this class.");
-                logger.error("So it might be foreign key constraint problem. Checking database required!!.");
+                       if (parent == null) {
+                           logger.error("Illegal state related to self reference of comment table in RDB, detected.");
+                           logger.error("Invalid parent comment id does not allowed by comment registering method of this class.");
+                           logger.error("So it might be foreign key constraint problem. Checking database required!!.");
 
-                throw new IllegalStateException("Odd foreign key constraint related to comment, detected.");
-            } else {
-                CommentResponseDTO commentDTO = modelMapper.map(child, CommentResponseDTO.class);
-                modelMapper.map(userDAO.read(child.getUserId()), commentDTO);
+                           throw new IllegalStateException("Odd foreign key constraint related to comment, detected.");
+                       } else {
+                           CommentResponseDTO commentDTO = modelMapper.map(child, CommentResponseDTO.class);
+                           modelMapper.map(userDAO.read(child.getUserId()), commentDTO);
 
-                parent.getChilds().add(commentDTO);
-            }
-        });
+                           parent.getChilds().add(commentDTO);
+                       }
+                   });
 
-        commentMap.values().forEach(parent -> parent.getChilds()
-                .sort((child1, child2) -> (-1) * child1.getUploadTime().compareTo(child2.getUploadTime())));
+        commentMap.values()
+                  .forEach(parent -> parent.getChilds()
+                  .sort((child1, child2) -> (-1) * child1.getUploadTime().compareTo(child2.getUploadTime())));
 
         List<CommentResponseDTO> returnedList = new ArrayList<>(commentMap.values());
         returnedList.sort((parent1, parent2) -> (-1) * parent1.getUploadTime().compareTo(parent2.getUploadTime()));

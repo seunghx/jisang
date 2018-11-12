@@ -36,9 +36,6 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 @Repository
 public class S3MultipartDAO implements MultipartDAO {
 
-    // Static Fields
-    // ==========================================================================================================================
-
     // Instance Fields
     // ==========================================================================================================================
 
@@ -52,9 +49,6 @@ public class S3MultipartDAO implements MultipartDAO {
 
     @Value("${aws.s3.bucket-name}")
     private String s3BucketName;
-
-    // Constructors
-    // ==========================================================================================================================
 
     // Methods
     // ==========================================================================================================================
@@ -86,46 +80,48 @@ public class S3MultipartDAO implements MultipartDAO {
         List<String> uploaded = new ArrayList<>();
 
         try {
-            Arrays.stream(files).forEach(file -> {
-                ObjectMetadata metaData = new ObjectMetadata();
-                metaData.setContentLength(file.getSize());
-                metaData.setContentType(file.getContentType());
+            Arrays.stream(files)
+                  .forEach(file -> {
+                      ObjectMetadata metaData = new ObjectMetadata();
+                      metaData.setContentLength(file.getSize());
+                      metaData.setContentType(file.getContentType());
 
-                String uploadedFilename = System.nanoTime() + "_" + file.getOriginalFilename();
+                      String uploadedFilename = System.nanoTime() + "_" + file.getOriginalFilename();
 
-                PutObjectRequest putObjectRequest = null;
+                      PutObjectRequest putObjectRequest = null;
 
-                try (InputStream ins = file.getInputStream()) {
+                      try (InputStream ins = file.getInputStream()) {
 
-                    putObjectRequest = new PutObjectRequest(s3BucketName, uploadedFilename, ins, metaData);
-                    putObjectRequest.setCannedAcl(CannedAccessControlList.PublicRead);
+                          putObjectRequest = 
+                                  new PutObjectRequest(s3BucketName, uploadedFilename, ins, metaData);
+                          putObjectRequest.setCannedAcl(CannedAccessControlList.PublicRead);
 
-                    s3Client.putObject(putObjectRequest);
+                          s3Client.putObject(putObjectRequest);
 
-                    uploaded.add(s3Client.getUrl(s3BucketName, uploadedFilename).toString());
+                          uploaded.add(s3Client.getUrl(s3BucketName, uploadedFilename).toString());
 
-                } catch (IOException e) {
-                    logger.info("Converting {} to RuntimeExceptoin.", e.toString());
+                      } catch (IOException e) {
+                          logger.info("Converting {} to RuntimeExceptoin.", e.toString());
 
-                    throw new RuntimeException(e);
-                }
-            });
-        } catch (RuntimeException e) {
+                          throw new RuntimeException(e);
+                      }
+                  });
+         } catch (RuntimeException e) {
 
-            if (logger.isInfoEnabled()) {
+             if (logger.isInfoEnabled()) {
                 logger.info("Uploading images failed due to occurrence of {}", e.toString());
-            }
+             }
 
-            if (!uploaded.isEmpty()) {
+             if (!uploaded.isEmpty()) {
                 logger.info("Starting to delete aleady uploaded images.");
 
                 try {
                     deleteAll(uploaded.toArray(new String[uploaded.size()]));
                 } catch (AmazonClientException ex) {
                     logger.error("Deleting files from amazon S3 failed due to", ex);
-
+ 
                     logger.info(
-                            "Putting image urls into image trash can. Images in amazon S3 will be deleted by scheduler.");
+                           "Putting image urls into image trash can. Images in amazon S3 will be deleted by scheduler.");
 
                     imageTrashCan.addAll(uploaded);
 
@@ -146,7 +142,7 @@ public class S3MultipartDAO implements MultipartDAO {
      *             {@link #deleteOne(String), #deleteAll(String...)}
      */
     public void delete(String... fileNames) {
-        if (Objects.isNull(fileNames) || fileNames.length == 0) {
+        if (fileNames == null || fileNames.length == 0) {
             throw new IllegalArgumentException("Arguments fileNames is empty.");
         }
 

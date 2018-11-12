@@ -28,7 +28,8 @@ public class MarketManagementDTO {
     @NotBlank(message = "지하상가 내 마켓 위치 정보를 입력해주세요. 예) 'A-7'.")
     private String address;
 
-    @ApiModelProperty(notes = "지하상가 위치 코드.", name = "location", required = true, example = "강남 : '11'", value = "코드북에 지정된 위치 코드를 사용해야 한다.")
+    @ApiModelProperty(notes = "지하상가 위치 코드.", name = "location", required = true, example = "강남 : '11'"
+                    , value = "코드북에 지정된 위치 코드를 사용해야 한다.")
     @NotBlank(message = "지하상가 위치 코드를 입력하세요. 예) 강남 : '11'.")
     @ExistingMallLocation(message = "올바른 지하상가 정보를 입력하세요.")
     private String location;
@@ -70,7 +71,8 @@ public class MarketManagementDTO {
         @ApiModelProperty(hidden = true)
         private int managerId;
 
-        @ApiModelProperty(notes = "마켓 대표 이미지.", name = "imageFile", value = "이미지 파일. jpg | png | tif 등의 올바른 이미지 파일 포맷을 사용해야 하며 이 프로퍼티는 응답에서는 제외 된다.")
+        @ApiModelProperty(notes = "마켓 대표 이미지.", name = "imageFile"
+                        , value = "이미지 파일. jpg | png | tif 등의 올바른 이미지 파일 포맷을 사용해야 하며 이 프로퍼티는 응답에서는 제외 된다.")
         @ImageExtension(message = "올바른 이미지 파일 형식이 아닙니다.")
         private MultipartFile imageFile;
 

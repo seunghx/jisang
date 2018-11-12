@@ -18,6 +18,9 @@ import com.jisang.dto.product.criteria.RecommendedViewCriteria;
  */
 public interface ProductDAO extends MybatisMapper {
 
+    // Methods
+    // ==========================================================================================================================
+
     public void create(Product product);
 
     public Product read(int productId);

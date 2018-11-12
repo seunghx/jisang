@@ -40,7 +40,14 @@ import com.amazonaws.AmazonServiceException;
 @Component
 @Aspect
 public class PersistenceAspect {
+
+    // Instance Fields
+    // ==========================================================================================================================
+
     private final Logger logger = LoggerFactory.getLogger(PersistenceAspect.class);
+
+    // Methods
+    // ==========================================================================================================================
 
     /**
      * 

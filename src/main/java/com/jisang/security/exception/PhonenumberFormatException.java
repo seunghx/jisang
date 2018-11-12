@@ -13,10 +13,19 @@ package com.jisang.security.exception;
  */
 public class PhonenumberFormatException extends SecurityBadRequestException {
 
+    // Static Fields
+    // ==========================================================================================================================
+
     private static final long serialVersionUID = -1915410717145483986L;
     private static final String PHONE_NUMBER_FIELD = "phone";
 
+    // Instance Fields
+    // ==========================================================================================================================
+
     private String phoneNumber;
+
+    // Constructors
+    // ==========================================================================================================================
 
     public PhonenumberFormatException(String msg, String phoneNumber) {
         super(msg);
@@ -28,6 +37,9 @@ public class PhonenumberFormatException extends SecurityBadRequestException {
         initCause(cause);
         this.phoneNumber = phoneNumber;
     }
+
+    // Methods 
+    // ==========================================================================================================================
 
     public String getPhoneNumberField() {
         return PHONE_NUMBER_FIELD;

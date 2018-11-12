@@ -19,9 +19,6 @@ public class IllegalAuthenticationProviderUsedException extends InternalAuthenti
 
     private static final long serialVersionUID = 3057079398385700842L;
 
-    // Instance Fields
-    // ==========================================================================================================================
-
     // Constructors
     // ==========================================================================================================================
 
@@ -33,8 +30,5 @@ public class IllegalAuthenticationProviderUsedException extends InternalAuthenti
         super(message);
         initCause(cause);
     }
-
-    // Methods
-    // ==========================================================================================================================
 
 }

@@ -9,9 +9,6 @@ import com.jisang.security.validation.JWTParsing;
 
 public class AuthenticationNumberTokenDTO implements TokenDTO {
 
-    // Static Fields
-    // ==========================================================================================================================
-
     // Instance Fields
     // ==========================================================================================================================
 
@@ -30,9 +27,6 @@ public class AuthenticationNumberTokenDTO implements TokenDTO {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @NotBlank(groups = { JWTBuilding.class })
     private String userEmail;
-
-    // Constructors
-    // ==========================================================================================================================
 
     // Methods
     // ==========================================================================================================================
@@ -68,6 +62,13 @@ public class AuthenticationNumberTokenDTO implements TokenDTO {
 
     public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getName() + "[clientIPAddr=" + clientIPAddr 
+                                    + ", authenticationNumber=" + authenticationNumber 
+                                    + ", token=" + token + ", userEmail=" + userEmail + "]";
     }
 
 }

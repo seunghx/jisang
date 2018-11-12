@@ -69,6 +69,14 @@ import static com.jisang.security.support.RedisKeyUtils.HashKeyUtils;
  */
 @Repository
 public class RedisUserDAO {
+    
+    // Static Fields
+    // ==========================================================================================================================
+
+    private static final String jtiField = HashKeyUtils.jtiField();
+
+    // Instance Fields
+    // ==========================================================================================================================
 
     private final Logger logger = LoggerFactory.getLogger(RedisUserDAO.class);
 
@@ -77,7 +85,8 @@ public class RedisUserDAO {
     @Autowired
     private Jackson2HashMapper hashMapper;
 
-    private static final String jtiField = HashKeyUtils.jtiField();
+    // Methods 
+    // ==========================================================================================================================
 
     /**
      * 
