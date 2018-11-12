@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace="com.jisang.persistence.CommentDAO">
+ 	<insert id="create" parameterType="com.jisang.domain.Comment" useGeneratedKeys="true" keyProperty="id">
+ 		INSERT INTO
+ 			tbl_comments(comment_user_id, comment_product_id, comment_content, comment_parent_id)
+ 		VALUES(#{userId}, #{productId}, #{content}, #{parentId})
+ 	</insert>
+ 	
+ 	<update id="updateParentId" parameterType="int">
+ 		UPDATE
+ 			tbl_comments
+ 		SET
+ 			comment_parent_id = #{id}
+ 		WHERE
+ 			comment_id = #{id}
+ 	</update>
+ 	
+ 	<select id="read" parameterType="int" resultMap="commentResultMap">
+ 		SELECT
+ 			*
+ 		FROM
+ 			tbl_comments
+ 		WHERE
+ 			comment_id = #{commentId}
+ 	</select>
+ 	
+ 	<select id="readList" parameterType="int" resultMap="commentResultMap">
+ 		SELECT
+ 			*
+ 		FROM
+ 			tbl_comments
+ 		WHERE
+ 			comment_product_id = #{productId}
+ 	</select>
+ 	
+ 	<resultMap id="commentResultMap" type="com.jisang.domain.Comment">
+ 		<id property="id" column="comment_id" />
+ 		<result property="userId" column="comment_user_id" />
+ 		<result property="productId" column="comment_product_id" />
+ 		<result property="content" column="comment_content" />
+ 		<result property="uploadTime" column="comment_upload_time" />
+ 		<result property="parentId" column="comment_parent_id" />
+ 	</resultMap>
+ </mapper>

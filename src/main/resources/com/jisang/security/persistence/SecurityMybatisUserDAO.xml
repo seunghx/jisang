@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace="com.jisang.security.persistence.SecurityMybatisUserDAO">
+ 	<select id="findPhoneNumber" parameterType="String" resultType="String">
+ 		SELECT
+ 			user_phone
+ 		FROM
+ 			tbl_users
+ 		WHERE
+ 			user_email = #{email}
+ 	</select>
+ 	<select id="find" parameterType="string" resultType="com.jisang.security.domain.Account">
+ 		SELECT
+ 			user_id as id,
+ 			user_role as role,
+ 			user_pwd as password
+ 		FROM
+ 			tbl_users
+ 		WHERE
+ 			user_email = #{email}
+ 	</select>	
+  </mapper>	

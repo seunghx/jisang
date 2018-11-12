@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	  	xmlns:th="http://thymeleaf.org">
+	<head>
+	<meta charset="utf-8">
+	<title>JISANG MAP DEMO</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+	<script th:inline="javascript" >
+
+	$(document).ready(function() {
+		
+		const METER_PER_LAT_SEC = 30;
+		const METER_PER_LNG_SEC = 25;
+		
+		const MAP = $('#drag-image');
+		const MARKER = $('#marker');
+		const USER_MARKER = $('#userMarker');
+		const DIV_OFFSET = $('#image-container').offset();
+		const MAP_CONTAINER_WIDTH = $("#image-container").outerWidth();
+		const MAP_CONTAINER_HEIGHT = $("#image-container").outerHeight();
+	
+
+		let mapInfo = /*[[${mapInfo}]]*/ null;
+		
+		mapInfo.topLeftLATDegree = mapInfo.topLeftLAT|0;
+		mapInfo.topLeftLNGDegree = mapInfo.topLeftLNG|0;
+		mapInfo.bottomRightLATDegree = mapInfo.bottomRightLAT|0;
+		mapInfo.bottomRightLNGDegree = mapInfo.bottomRightLNG|0;
+		
+		mapInfo.topLeftLATSec = (mapInfo.topLeftLAT - mapInfo.topLeftLATDegree) * 3600;
+		mapInfo.topLeftLNGSec = (mapInfo.topLeftLNG - mapInfo.topLeftLNGDegree) * 3600;
+		mapInfo.bottomRightLATSec = (mapInfo.bottomRightLAT - mapInfo.bottomRightLATDegree) * 3600;
+		mapInfo.bottomRightLNGSec = (mapInfo.bottomRightLNG - mapInfo.bottomRightLNGDegree) * 3600;
+	
+
+		let yOffsetSec = mapInfo.topLeftLATSec - mapInfo.bottomRightLATSec;
+		let xOffsetSec = mapInfo.bottomRightLNGSec - mapInfo.topLeftLNGSec;
+
+		let distanceOfY = yOffsetSec * METER_PER_LAT_SEC;
+		let distanceOfX = xOffsetSec * METER_PER_LNG_SEC;
+
+   	let verticalMeterPerPixel = distanceOfY / MAP.height();
+		let horizontalMeterPerPixel = distanceOfX / MAP.width();
+
+		
+		/*
+		 * Position of marker.
+		 */
+		let markerOffset = { top : null, left : null };
+		
+		/*
+		 * Position of user location marker
+		 */
+		let userMarkerOffset = { top : null, left : null };
+
+		/*
+		 * Latest location of mouse position while isDraggingStarted is true;
+		 */
+		let lastMousePos = { x : null, y : null };
+
+		/* 
+		 * 
+		 * Indicate dragging is started or not. 
+		 *
+		 * dragging - mouse down -> move -> up 
+		 *
+		 */
+		let isDraggingStarted = false;
+		/* Indicate whether image is loaded or not. */
+		let isMapLoaded = false;
+		/* Indicate whether marker is loaded or not. */
+		let isMarkerLoaded = false;
+		/* Indicate whether marker is loaded or not. */
+		let isUserMarkerLoaded = false;
+		
+		/* mouseleave -> modalEffect = false ,  modal up ->  modalEffect = true */
+		let enterLock = false;
+		let leaveLock = false;
+
+		let zoomMagnification = 2;
+		let markerHoverZoomMagnification = 1.2;
+		
+		let mapWidth = null;			
+		let mapHeight = null;
+		
+		$(window).on('load', function(){			
+			mapInit();
+			markerInit();
+			userMarkerInit();
+		});
+	
+		
+		/*
+		 * Init map related variables 
+		 */
+		function mapInit(){
+	
+			mapWidth = MAP.width();
+			mapHeight = MAP.height();
+
+			for(let address of mapInfo.addressList){
+					
+				address.topLeftXPixel = Math.round((address.topLeftLNG - mapInfo.topLeftLNGSec) * MAP.width() / xOffsetSec);
+				address.topLeftYPixel = Math.round((mapInfo.topLeftLATSec - address.topLeftLAT) * MAP.height() / yOffsetSec);
+
+				address.bottomRightXPixel = Math.round((address.bottomRightLNG - mapInfo.topLeftLNGSec) * MAP.width() / xOffsetSec);
+				address.bottomRightYPixel = Math.round((mapInfo.topLeftLATSec - address.bottomRightLAT) * MAP.height() / yOffsetSec);
+
+			};
+
+			isMapLoaded = true;	
+		}
+		
+
+		/*
+		 * Init marker related variables 
+		 */
+		function markerInit(){
+			for(let address of mapInfo.addressList){
+				if(address.marked){
+					
+					markerOffset.top = (address.topLeftYPixel + address.bottomRightYPixel)/2 - MARKER.height();
+					markerOffset.left = (address.topLeftXPixel + address.bottomRightXPixel)/2 - MARKER.width()/2;
+					
+					MARKER.offset({
+						top : markerOffset.top + MAP.offset().top,
+						left : markerOffset.left +  MAP.offset().left
+					});
+					
+					isMarkerLoaded = true;
+
+					break;
+				}
+			}
+		}
+		
+
+		/*
+		 * Init user location marker related variables 
+		 */
+		function userMarkerInit() {
+			let userMarkerPos = getUserGPSPos();
+			
+			let userMarkerLNGDegree = userMarkerPos.lng|0;
+			let userMarkerLATDegree = userMarkerPos.lat|0;
+			
+			if((mapInfo.bottomRightLATDegree <= userMarkerLATDegree) && (userMarkerLATDegree <= mapInfo.topLeftLATDegree)){
+				if((mapInfo.topLeftLNGDegree <= userMarkerLNGDegree) && (userMarkerLNGDegree <= mapInfo.bottomRightLNGDegree)){
+					
+					let userMarkerLATSec = ((userMarkerPos.lat - userMarkerLATDegree)*3600).toFixed(2);
+					let userMarkerLNGSec = ((userMarkerPos.lng - userMarkerLNGDegree)*3600).toFixed(2);
+					
+					if((mapInfo.bottomRightLATSec <= userMarkerLATSec) && (userMarkerLATSec <= mapInfo.topLeftLATSec)){
+						if((mapInfo.topLeftLNGSec <= userMarkerLNGSec) && (userMarkerLNGSec <= mapInfo.bottomRightLNGSec)) {
+
+							let userMarkerXPixel = Math.round((userMarkerLNGSec - mapInfo.topLeftLNGSec) * MAP.width() / xOffsetSec);
+							let userMarkerYPixel = Math.round((mapInfo.topLeftLATSec - userMarkerLATSec) * MAP.height() / yOffsetSec);
+							
+							userMarkerOffset.left = userMarkerXPixel - USER_MARKER.width()/2;
+							userMarkerOffset.top = userMarkerYPixel - USER_MARKER.height();
+							
+							USER_MARKER.offset({
+								top : userMarkerOffset.top + MAP.offset().top,
+								left : userMarkerOffset.left + MAP.offset().left
+							});
+							
+							isUserMarkerLoaded = true;
+						}
+					}
+				}
+			}
+		}
+		
+		/*
+		 * 지하상가의 특성상(GPS가 제대로 작동되지 않는다고 한다.) 그리고 웹 특성상 사용자의 현재 위치를 받아 올 수 없으므로 지상 지도 데모 버전에서는
+		 * 현재 위치를 고정된 GPS 값을 이용하기로 하였다. (지하상가의 중심 위치.)
+		 */
+		function getUserGPSPos(){
+			return {
+				lng : 127.743888,
+				lat : 37.850301
+			};
+		}
+
+		/*
+		 * When mouse entered, Zoom in occur.
+		 */
+		$('#image-container').mouseenter(function(event){ 
+			
+			if(isMapLoaded && !enterLock){
+
+				// Zoom related operation.
+				originalMapHeight = MAP.height();
+				originalMapWidth = MAP.width();
+					
+        MAP.width(MAP.width() * zoomMagnification);  
+       	MAP.height(MAP.height() * zoomMagnification);
+           		
+        MAP.css({ 
+        	top : (-1) * ((MAP.height() - originalMapHeight) / 2),
+          left : (-1) * ((MAP.width() - originalMapWidth) / 2)
+        }); 
+		
+        mapWidth = MAP.width();
+				mapHeight = MAP.height();
+
+				for(let address of mapInfo.addressList){
+					address.topLeftXPixel *= zoomMagnification;
+					address.topLeftYPixel *= zoomMagnification;
+					address.bottomRightXPixel *= zoomMagnification;
+					address.bottomRightYPixel *= zoomMagnification;
+				}
+
+				if(isMarkerLoaded){
+					MARKER.width(MARKER.width() * zoomMagnification);
+
+					// Adjusting marker location 
+					markerOffset.top *= zoomMagnification;
+					markerOffset.left *= zoomMagnification;	
+
+					MARKER.offset({
+							top : markerOffset.top + DIV_OFFSET.top - ((MAP.height() - originalMapHeight) / 2),
+							left : markerOffset.left + DIV_OFFSET.left - ((MAP.width() - originalMapWidth) / 2)
+					});
+				}
+				
+				if(isUserMarkerLoaded){
+					USER_MARKER.width(USER_MARKER.width() * zoomMagnification);
+					
+					// Adjusting marker location
+					userMarkerOffset.top *= zoomMagnification;
+					userMarkerOffset.left *= zoomMagnification;
+				
+					USER_MARKER.offset({
+						top : userMarkerOffset.top + DIV_OFFSET.top - ((MAP.height() - originalMapHeight) / 2),
+						left : userMarkerOffset.left + DIV_OFFSET.left - ((MAP.width() - originalMapWidth) / 2)
+					});
+				}
+			}
+		});
+
+
+		/*
+		 * When mouse leaved, Zoom out occurred.
+		 *
+		 * jquery의 mouseout 이벤트가 아닌 mouse leave 이벤트를 선택한 이유는 이와 유사한 mouse out 이벤트의 경우 
+		 * 지도 상의 marker에 마우스가 올라가는 경우에도 out 이벤트가 발생하기 때문.
+		 *
+		 */
+		$('#image-container').mouseleave(function(event){
+			if(isMapLoaded && !leaveLock){
+			
+  			isDraggingStarted = false;
+
+		 		MAP.css({ 
+		 	 		top : 0 + 'px',
+		     	left : 0 + 'px'
+		   	});	
+
+	   	 	MAP.width(MAP.width()/zoomMagnification); 
+		 		MAP.height(MAP.height()/zoomMagnification); 
+
+     		mapWidth /= zoomMagnification; 
+		   	mapHeight /= zoomMagnification;
+
+
+				for(let address of mapInfo.addressList){
+					address.topLeftXPixel /= zoomMagnification;
+					address.topLeftYPixel /= zoomMagnification;
+					address.bottomRightXPixel /= zoomMagnification;
+					address.bottomRightYPixel /= zoomMagnification;
+				}
+
+		   	if(isMarkerLoaded){
+
+		   		MARKER.width(MARKER.width()/zoomMagnification);
+
+					markerOffset.top /= zoomMagnification; 
+					markerOffset.left /= zoomMagnification; 
+
+					MARKER.css({
+						top : markerOffset.top,
+						left : markerOffset.left
+					});
+				}
+		    
+		   	if(isUserMarkerLoaded){
+		   		USER_MARKER.width(USER_MARKER.width()/zoomMagnification);
+		    	
+		   		userMarkerOffset.top /= zoomMagnification;
+		   		userMarkerOffset.left /= zoomMagnification;
+		    	
+		   		USER_MARKER.css({
+		   			top : userMarkerOffset.top,
+		   			left : userMarkerOffset.left
+		   		});
+		   	}
+		   	
+		   	enterLock = false;
+			}
+		});
+
+		/*
+		 * 
+		 */
+		$('#image-container').mousedown(function(event) {
+			// only excuted after image loaded.
+			if(isMapLoaded) { 	
+
+				let mouseX = event.pageX;
+				let mouseY = event.pageY;
+
+				let mouseXPosOnImage = mouseX - MAP.offset().left;
+				let mouseYPosOnImage = mouseY - MAP.offset().top;
+					
+				for(let address of mapInfo.addressList){
+					if((mouseXPosOnImage >= address.topLeftXPixel) && (mouseXPosOnImage <= address.bottomRightXPixel)){
+
+						if((mouseYPosOnImage >= address.topLeftYPixel) 	&& (mouseYPosOnImage <= address.bottomRightYPixel)) {
+								console.log(address.id + " clicked");
+																
+								$('#market-modal').empty();
+								$('#market-modal').append('<h1> Market Info </h1><br>' + '<h3>' + address.market.name + '</h3><br>'
+										+ '<p> 추가 마켓 정보 생길 경우 아래에 추가. </p>');
+								$('#market-modal').modal({ fadeDuration: 200, fadeDelay: 0.50 });
+																
+								break;
+						}
+					}
+				}
+
+				isDraggingStarted = true;
+
+				lastMousePos = { 
+					x: mouseX - DIV_OFFSET.left, 
+					y: mouseY - DIV_OFFSET.top
+				};
+			}
+		});
+
+
+		$('#image-container').mouseup(function() {
+			isDraggingStarted = false;
+		});
+
+
+		$('#image-container').mousemove(function(event) {
+			if(isDraggingStarted) {
+				let curMousePos = { 
+														x: event.pageX - DIV_OFFSET.left,
+														y: event.pageY - DIV_OFFSET.top 
+													};
+					
+				let movingDistanceX = curMousePos.x - lastMousePos.x;
+				let movingDistanceY = curMousePos.y - lastMousePos.y;
+					
+
+				lastMousePos = curMousePos;
+										
+				let changedTopPos = parseInt(MAP.css('top'), 10) + movingDistanceY;
+				let changedLeftPos = parseInt(MAP.css('left'), 10) + movingDistanceX;
+
+				if(changedTopPos > 0){
+					changedTopPos = 0;
+				}
+
+				// changedTopPos + mapHeight must be equal to or more than Conatiners height.
+				// must be -> changedTopPos + mapHeight >= MAP_CONTAINER_HEIGHT
+				if(changedTopPos < (MAP_CONTAINER_HEIGHT - mapHeight)){
+					changedTopPos = MAP_CONTAINER_HEIGHT - mapHeight;
+				}
+
+
+				if(changedLeftPos > 0){
+					changedLeftPos = 0;
+				}
+
+				if(changedLeftPos < (MAP_CONTAINER_WIDTH - mapWidth)){
+					changedLeftPos = MAP_CONTAINER_WIDTH - mapWidth;
+				}
+
+				MAP.css({ 
+					top: changedTopPos + 'px', 
+					left: changedLeftPos + 'px' 
+				});
+
+				if(isMarkerLoaded){
+					MARKER.offset({
+						top : markerOffset.top  + changedTopPos + DIV_OFFSET.top,
+						left : markerOffset.left  + changedLeftPos + DIV_OFFSET.left
+					});
+				}
+					
+				if(isUserMarkerLoaded){
+					USER_MARKER.offset({
+						top : userMarkerOffset.top + changedTopPos + DIV_OFFSET.top,
+						left : userMarkerOffset.left + changedLeftPos + DIV_OFFSET.left
+					});
+				}
+			}
+		});
+
+		$('#marker').mouseenter(function(event){
+			MARKER.width(MARKER.width() * markerHoverZoomMagnification);
+		});
+
+		$('#marker').mouseleave(function(event){
+			MARKER.width(MARKER.width() / markerHoverZoomMagnification);
+		});
+			
+		$('#userMarker').mouseenter(function(event){
+			USER_MARKER.width(USER_MARKER.width() * markerHoverZoomMagnification);
+		});
+			
+		$('#userMarker').mouseleave(function(event){
+			USER_MARKER.width(USER_MARKER.width() / markerHoverZoomMagnification);
+		});
+		
+		$('#market-modal').on($.modal.BEFORE_CLOSE, function(event, modal){
+			enterLock = true;
+			isDraggingStarted = false;
+		});
+		
+		$('#market-modal').on($.modal.CLOSE, function(event, modal){
+			leaveLock = false;
+		});
+		
+		$('#market-modal').on($.modal.BLOCK, function(event, modal) {
+			leaveLock = true;
+		});
+	});
+	
+	</script>
+	<style>
+
+		#image-container {
+			height: 500px;
+			width: 800px;
+			margin: 40px auto;
+			overflow: hidden;
+			border: 1px solid #cccccc;
+			box-sizing: border-box;
+			position: relative;
+			cursor: move;
+		}
+
+		#drag-image {
+			height: 500px;
+			pointer-events: none;
+			position: relative;
+			display : block;
+			margin : 0px;
+			padding : 0px;
+			left : 0;
+			top : 0;
+		}
+
+		#marker {
+			margin:0;
+			padding:0;
+			position:absolute;
+		}
+		
+		#userMarker {
+			margin:0;
+			padding:0;
+			position:absolute;
+		}
+		
+		#market-modal {
+			text-align : center;
+		}
+
+	</style>
+</head>
+<body>
+	<div id="image-container">
+		<img id="drag-image" src="/asset/gangnam_map.png" />
+		<img id="marker" src="/asset/marker.png" /> 		
+		<img id="userMarker" src="/asset/userMarker.png" />
+		<div class="modal" id="market-modal">	</div>
+	</div>	
+</body>
+</html>

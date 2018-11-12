@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aws-context="http://www.springframework.org/schema/cloud/aws/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/cloud/aws/context
+        http://www.springframework.org/schema/cloud/aws/context/spring-cloud-aws-context.xsd">
+
+        <aws-context:context-region region="${aws.global.region}"/>
+        <aws-context:context-credentials>
+  		 	<aws-context:simple-credentials access-key="${aws.access-key.id}" secret-key="${aws.secret.access-key}" />
+  		</aws-context:context-credentials>
+  		<aws-context:context-resource-loader/>
+  		<context:property-placeholder location="classpath:application.properties" />
+</beans>

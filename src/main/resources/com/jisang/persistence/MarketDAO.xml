@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace="com.jisang.persistence.MarketDAO">
+ 	 <insert id="create" parameterType="com.jisang.domain.Market" useGeneratedKeys="true" keyProperty="id">
+ 		 INSERT INTO
+ 			 tbl_markets(market_location, market_name)
+ 		 VALUES(#{location}, #{name})
+ 	 </insert>
+ 	
+ 	 <select id="read" parameterType="int" resultMap="readMarketResultMap">
+ 		 SELECT 
+ 			 *
+ 		 FROM 
+ 			 tbl_markets
+ 		 WHERE 
+ 			 market_id = #{marketId}
+   </select>
+  	
+   <update id="update" parameterType="com.jisang.domain.Market">
+  	 UPDATE 
+  		 tbl_markets
+  	 SET 
+  		 market_location = #{location}, market_name = #{name}
+  		 <if test = 'imageUrl!= null and imageUrl != ""'>
+  			 , market_image = #{imageUrl}
+  		 </if>
+  	 WHERE
+  		 market_id = #{id}
+   </update>
+  	
+   <select id="readProductByMarketId" parameterType="int" resultMap="readProductsResultMap">
+  	 SELECT 
+  		 *
+  	 FROM 
+  		 tbl_products 
+  	 WHERE 
+  		 product_market_id = #{id} 
+   </select>
+  	
+   <select id="readImages" parameterType="int" resultType="string">
+  	 SELECT 
+  		 image_url as url
+  	 FROM 
+  		 tbl_images
+  	 WHERE 
+  		 image_product_id = #{id}
+   </select>
+  	
+   <select id="readHashes" parameterType="int" resultType="string">
+  	 SELECT 
+  		 hashtag_content as content
+  	 FROM 
+  		 tbl_hashtags
+  	 WHERE 
+  		 hashtag_product_id = #{id}
+   </select>
+  	
+   <resultMap id="readMarketResultMap" type="com.jisang.domain.Market">
+  	 <id property="id" column="market_id" />
+  	 <result property="location" column="market_location" />
+  	 <result property="name" column="market_name" />
+  	 <result property="imageUrl" column="market_image" />
+  	 <collection property="products" column="market_id" fetchType="lazy" javaType="ArrayList" select="readProductByMarketId" />
+   </resultMap>
+  	
+   <resultMap id="readProductsResultMap" type="com.jisang.domain.Product">
+  	 <id property="id" column="product_id" />
+  	 <result property="marketId" column="product_market_id" /> 
+  	 <result property="category" column="product_category" />
+  	 <result property="name" column="product_name" />
+  	 <result property="price" column="product_price" />
+  	 <result property="detail" column= "product_detail" />
+  	 <result property="representingImageUrl" column= "product_representing_image" />
+  	 <collection property="imageUrls" column="product_id" fetchType="lazy" javaType="ArrayList" select="readImages" />
+  	 <collection property="hashTags" column="product_id" fetchType="lazy" javaType="ArrayList" select="readHashes" />
+   </resultMap>
+ </mapper>

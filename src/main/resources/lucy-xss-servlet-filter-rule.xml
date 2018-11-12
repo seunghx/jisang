@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://www.navercorp.com/lucy-xss-servlet">
+
+   <defenders>
+    	<!-- XssSaxFilter 등록 -->
+    	<defender>
+        	<name>xssSaxFilterDefender</name>
+        	<class>com.navercorp.lucy.security.xss.servletfilter.defender.XssSaxFilterDefender</class>
+        	<init-param>
+            	<param-value>lucy-xss-sax.xml</param-value>   <!-- lucy-xss-filter의 sax용 설정파일 -->
+            	<param-value>false</param-value>        <!-- 필터링된 코멘트를 남길지 여부, 성능 효율상 false 추천 -->
+       		</init-param>
+    	</defender>
+	</defenders>
+
+    <default>
+        <defender>xssSaxFilterDefender</defender>
+    </default>
+
+</config>

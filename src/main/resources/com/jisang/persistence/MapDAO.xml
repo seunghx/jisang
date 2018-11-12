@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace="com.jisang.persistence.MapDAO">
+ 
+  <update id="updateAddressMarketId">
+  	UPDATE
+  		tbl_addresses
+  	SET
+  		address_market_id = #{marketId}
+  	WHERE
+  		address_id = #{address} AND address_location = #{location}
+  </update>
+  
+  <update id="updateAddressMarketIdByOlderMarketId">
+  	UPDATE
+  		tbl_addresses
+  	SET
+  		address_market_id = #{newMarketId}
+  	WHERE
+  		address_market_id = #{olderMarketId}
+  </update>
+  
+  <select id="readAddressByAddressIdAndLocation" parameterType="string" resultMap="addressResultMap">
+  	SELECT
+  		*
+  	FROM
+  		tbl_addresses
+  	WHERE
+  		address_id = #{address} AND address_location = #{location}	
+  </select>
+  
+  <select id="readAddressByMarketId" parameterType="int" resultMap="addressResultMap">
+  	SELECT
+  		*
+  	FROM
+  		tbl_addresses
+  	WHERE
+  		address_market_id = #{marketId}
+  </select>
+
+ 	
+	<select id="readAddressesByLocation" parameterType="string" resultMap="addressResultMap">
+ 		SELECT 
+ 			*
+ 		FROM
+ 			tbl_addresses
+ 		WHERE
+ 			address_location = #{locationId}
+ 	</select>
+ 	
+ 		
+ 	<select id="readLocation" parameterType="string" resultMap="locationResultMap">
+ 		SELECT 
+ 			location_id,
+ 			ST_Y(top_left_point) as top_left_lat,
+ 			ST_X(top_left_point) as top_left_lng,
+ 			
+ 			ST_Y(bottom_right_point) as bottom_right_lat,
+ 			ST_X(bottom_right_point) as bottom_right_lng
+ 		FROM
+ 			tbl_locations
+ 		WHERE
+ 			location_id = #{location}
+ 	</select>
+ 	
+ 	
+ 	<select id="readAddressMarket" parameterType="int" resultType="com.jisang.domain.Market">
+ 		SELECT
+ 			market_id as id,
+ 			market_name as name
+ 		FROM
+ 			tbl_markets
+ 		WHERE
+ 			market_id = #{id}
+ 	</select>
+ 	
+ 	 	 	
+ 	<resultMap id="addressResultMap" type="com.jisang.domain.Address">
+ 		<id property="id" column="address_id" />
+ 		<result property="location" column="address_location" />
+ 		<result property="topLeftLAT" column="top_left_lat" />
+ 		<result property="topLeftLNG" column="top_left_lng" />
+ 		<result property="bottomRightLAT" column="bottom_right_lat" />
+ 		<result property="bottomRightLNG" column="bottom_right_lng" />
+ 		<association property="market" column="address_market_id" select="readAddressMarket" />
+ 	</resultMap>
+ 	
+ 	
+ 	<resultMap id="locationResultMap" type="com.jisang.domain.Location">
+ 		<id property="id" column="location_id" />
+ 		<result property="topLeftLAT" column="top_left_lat" />
+ 		<result property="topLeftLNG" column="top_left_lng" />
+		<result property="bottomRightLAT" column="bottom_right_lat" />
+		<result property="bottomRightLNG" column="bottom_right_lng" />		
+		<collection property="addressList" select="readAddressesByLocation" column="location_id" javaType="ArrayList"/>
+  </resultMap>
+</mapper>

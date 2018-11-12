@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+ 
+ <mapper namespace="com.jisang.persistence.UserDAO">
+ 	<select id="read" parameterType="int" resultType="com.jisang.domain.User">
+ 		SELECT 
+ 			user_email as email, user_name as name , user_phone as phone, user_role as role
+ 		FROM
+ 			tbl_users
+ 		WHERE
+ 			user_id = #{uid}
+ 	</select>
+ 	
+ 	<insert id="create" parameterType="com.jisang.domain.User" useGeneratedKeys="true" keyProperty="id">
+ 		INSERT INTO
+ 			tbl_users(user_email, user_pwd, user_name, user_phone, user_role)
+ 		VALUES(#{email}, #{password}, #{name}, #{phone}, #{role})
+ 	</insert> 	
+ 
+ 	<!-- email은 사용자 입장에서 id인 만큼 수정 불가능하다고 정의하였다. 패스워드의 경우 서비스 계층 오브젝트에서 empty 검사 및 추가 유효성 검사(필요한 경우
+ 	 10-14자 사이의 영문/숫자가 혼합된 형태 등의 제약을 검사할 수 있겠다.)를 수행하겠으나 그래도 null값이나 빈문자열에 대한 검사를 한 후 수정한다.  
+ 	 현재 지상 어플리케이션 구현에는 패스워드에 대한 제약 사항은 없기 때문에 서비스 오브젝트에서 따로 이를 검사하지는 않는다. -->
+ 	<update id="update" parameterType="com.jisang.domain.User">
+ 		UPDATE
+ 			tbl_users
+ 		SET
+ 			user_name = #{name}, user_phone = #{phone} 
+ 			<if test='password != null and password != ""'>
+ 				, user_pwd = #{password}
+ 			</if>
+ 		WHERE 
+ 			user_id = #{id}
+ 	</update>
+ 	
+ </mapper>	
