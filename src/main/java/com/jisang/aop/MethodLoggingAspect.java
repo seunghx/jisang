@@ -30,8 +30,9 @@ public class MethodLoggingAspect {
     // ==========================================================================================================================
 
     @Around("execution(* com.jisang..*.*(..)) && !execution(* com.jisang.security..*.*(..))"
-            + " && !execution(* com.jisang.config..*.*(..))" + " && !execution(* com.jisang.persistence..*.*(..))"
-            + " && !execution(* com.jisang.web..*.*(..))")
+          + " && !execution(* com.jisang.config..*.*(..))" 
+          + " && !execution(* com.jisang.persistence..*.*(..))"
+          + " && !execution(* com.jisang.web..*.*(..))")
     public Object methodLog(ProceedingJoinPoint jp) throws Throwable {
         if (logger.isDebugEnabled()) {
             logger.debug("Starting method {}#{}.", jp.getTarget(), jp.getSignature().toShortString());

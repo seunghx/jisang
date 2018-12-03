@@ -54,11 +54,12 @@ public class JWTServiceResolver {
      * 
      */
     public JWTService resolveJWTService(Class<? extends TokenDTO> tokenDTO) {
-        Optional.ofNullable(tokenDTO).orElseThrow(() -> {
-            logger.warn("Argument tokenDTO is null. Checking code required.");
+        Optional.ofNullable(tokenDTO)
+                .orElseThrow(() -> {
+                    logger.warn("Argument tokenDTO is null. Checking code required.");
 
-            throw new InternalAuthenticationServiceException("Argument tokenDTO is null.");
-        });
+                    throw new InternalAuthenticationServiceException("Argument tokenDTO is null.");
+                });
 
         try {
             return jwtServices.stream()

@@ -22,24 +22,34 @@ import static com.jisang.security.support.RedisKeyUtils.HashKeyUtils;
  * 
  * 오버헤드와 지연 시간을 고려하면 매 로그인 유지를 위한 JWT token 인증시마다 RDB에 다녀오는 것은 무리가 크다고 생각하여 JWT
  * token에 refresh-ttl을 지정하여 토큰 갱신 기간(예를 들면 30분)이 지날 때마다 RDB로부터 JTI를 비교하도록 하였었다.
+ * (처음에는 exp 클레임보다 짧은 기한을 갖는 custom claim 을 두어 refresh-ttl마다 토큰을 갱신하고 exp 클레임으로 장기간 미이용 
+ * 유저에 대한 로그아웃 처리(재로그인 유도)를 하려고 하였음. JTI를 매 요청마다 비교하지 않을 경우, 긴 갱신기한을 갖는 토큰은 위험 요소가
+ * 크기 때문에 exp 만으로는 부족하다고 판단하였으며 exp를 짧게 가져갈 경우 재로그인이 자주 발생하므로 불편이 있을 수 있다고 판단. 
+ * 그러므로 exp 외에 refresh-ttl 클레임을 추가로 사용함.)
  * 그러나 이 마저도 만족스럽지는 않았다. refresh-ttl 마다 RDB를 조회해야 했고 JTI 비교에 통과한 경우 새로 갱신까지 해주어야
- * 했기 때문이다. state less한 어플리케이션을 포기해야하나 아니면 JTI 필드를 없애 보안(재생 공격 방어)을 포기해야의 갈림길에서
- * state less를 포기하기로 하여 redis 적용을 결심하게 되었다.
+ * 했기 때문이다. 또한 refresh-ttl 내에 재생공격이 발생할 수도 있다. 
+ * 위의 이유로 state less한 어플리케이션을 포기해야하나 아니면 JTI 필드를 없애 보안(재생 공격 방어)을 포기해야하나의 갈림길에서
+ * state less를 포기하기로 하여 redis 적용을 결심하게 되었다. ({@link UserAuthJWTService}에 설명함)
  * 
  * JTI는 메모리에 두되 유저 아이디와 role 정보 등의 정보는 JWT token에 담음으로써 state-less는 아니어도 어느 정도
  * 메모리 절약이 가능하다. 정말 꼭 필요한 정보만 메모리에 담았기 때문이다.(유저 아이디와 role 정보를 RDB 등에 담아도 되나 이럴
- * 경우 인증을 거치는 모든 엔드포인트 요청에 대한 처리마다 RDB에 접근하게 된다.) 물론 redis가 아닌 웹 컨테이너가 제공하는 세션에
+ * 경우 RDB에 접근이 보다 자주 일어나게 된다.) 물론 redis가 아닌 웹 컨테이너가 제공하는 세션에
  * JTI를 담아도 되겠으나 (실제 서비스를 하지는 않지만 서비스를 한다는 가정하에) 나중에 어플리케이션이 성장하여 서버 인스턴스가 여러 개가
  * 될 경우 redis를 세션 저장소로 이용하는 경우가 더 나을 것이라고 생각하였다. (이 때 당시에는 SpringSession 프로젝트의
  * 존재를 몰랐다.)
  * 
  * 
+ * 알아본바에 의하면,
+ * 
  * 웹 컨테이너 세션을 사용할 경우 서비스 이용자의 증/감에 따른 클러스터 내의 서버의 증/감이 일어날 때마다 서버 내부의 세션 정보 처리에
  * 대한 리밸런싱 작업이 서비스를 수행하는 어플리케이션의 성능에 영향을 미칠 수 있으며 또한 웹 컨테이너의 세션도 서버의 JVM 상의 힙 위에
  * 존재하기 때문에 데이터 양이 많아질 수록 가비지 컬렉션 등의 동작에 따라 서버 동작이 느려질 수 있다고 한다 또한 웹 컨테이너(의 세션
  * 매니저)가 (세션 정보를 가져오기 위해)클라우드 내의 다른 서버의 존재를 알기 위해 기존 서비스 중인 서버에 다른 서버를 가리키는
- * ip/port 등을 설정해줘야 하므로 불편해서라고도 설명한다.
+ * ip/port 등을 설정해줘야 하는데 이 부분이 불편하고 톰캣의 멀티 캐스팅을 통한 동작 방식이 네트워크 부하를 증가시킨다는 단점이 있고
+ * 클러스터 환경에 적합하다고 여겨지는 방식이 아니라고 한다.
  * 
+ * <위에서 서버 인스턴스가 여러 대일 경우에 대한 가정을 하였는데, 이 경우 서버 앞 단에 리버스 프록시 서버가 존재할 것이다. 
+ * 프록시 서버가 sticky session을 지원 및 동작할 경우는 세션 공유 저장을 걱정하지 않아도 되겠다.>
  * 
  * 
  * 또한 작지만 RDB의 부하를 줄일 수 있다는 장점도 있다. 웹 서버의 세션을 사용할 경우(redis 사용 x) 세션이 종료되면 저장이
@@ -51,7 +61,7 @@ import static com.jisang.security.support.RedisKeyUtils.HashKeyUtils;
  * 자체가 지속성을 갖는 데이터베이스이므로 (메모리 위에 올려지는 만큼 돌발 상황에 대한 대처는 필요하다. - 레디스에서 추천하는 대로 aof
  * 방식과 rdb 방식을 둘 다 사용하였다. (그러나 replica 등은 사용하지 않았다.)) 세션이 끝날 때 필요한 정보를(저장이 필요한
  * 정보가 있다고할 때 해당 정보를) RDB에 따로 저장할 필요가 없다. 유사 기술 memcached의 경우 지속성을 갖는 데이터베이스는
- * 아니며 단지 메모리 위에서 동작하는 일종의 캐쉬이기 때문에 위와 같은 장점을 만족하지 못한다. 물론 redis의 String과 같은 단순
+ * 아니며 단지 메모리 위에서 동작하는 일종의 캐시이기 때문에 위와 같은 장점을 만족하지 못한다. 물론 redis의 String과 같은 단순
  * key-value 타입 외에 제공되는 데이터 타입이 없다는 점으로부터 이미 memchached는 고려하지 않았다.
  * 
  * 
@@ -104,8 +114,9 @@ public class RedisUserDAO {
         Objects.requireNonNull(tokenComponent,
                 "Null value argument tokenComponent detected while trying to update user token info in " + this);
 
-        stringRedisTemplate.opsForHash().putAll(RedisKeyUtils.userKey(tokenComponent.getId()),
-                hashMapper.toHash(tokenComponent));
+        stringRedisTemplate.opsForHash()
+                           .putAll(RedisKeyUtils.userKey(tokenComponent.getId()),
+                                   hashMapper.toHash(tokenComponent));
 
         logger.info("Updating user token information succeeded.");
 

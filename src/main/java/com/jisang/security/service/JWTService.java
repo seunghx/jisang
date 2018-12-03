@@ -19,7 +19,7 @@ import com.jisang.security.dto.TokenDTO;
  * 그래서 {@code Authentication Filter}와 {@link AuthenticationProvider} 구현은 어플리케이션의
  * 인증에 중요한 역할을 하는 컴포넌트인 만큼 이들 클래스는 신뢰할 수 있다는 가정하에, JWT token의 안전한 생성을 위하여
  * {@code Authentication Filer}(Servlet Filter) 및 {@link AuthenticationProvider}
- * 구현과 같은 패키지 {@code com.jisang.security.authentication}에 이 클래스를 정의하기로 하였다.
+ * 구현과 같은 패키지 {@code com.jisang.security.authentication}에 이 클래스를 정의하기로 하였었다.
  * 
  * 이 인터페이스 구현 클래스의 메서드가 {@code com.jisang.security.authentication} 패키지 외부에서 호출
  * 가능할 경우, 전달을 목적으로 {@link TokenDTO}를 내부 프로퍼티로 담고있는 {@link Authentication} 구현 및
@@ -29,7 +29,7 @@ import com.jisang.security.dto.TokenDTO;
  * 정의하였었다. ({@code com.jisagn.security.authentication} 패키지의 클래스들은 신뢰할 수 있다고 가정.)
  * 
  * 그러나 이런 방법만으로는 어차피 안전한 JWT token의 생성을 보장할 수 없다. 외부 컴포넌트에서 정말 악의가 있다면 리플렉션이라도
- * 이용할 것이기 때문이다. 또한 또한 이 인터페이스의 구현을 거치지 않고 바로 {@link io.jsonwebtoken}과 같은 JWT 관련
+ * 이용할 것이기 때문이다. 또한 이 인터페이스의 구현을 거치지 않고 바로 {@link io.jsonwebtoken}과 같은 JWT 관련
  * 라이브러리를 직접 이용할 수도 있다.
  * 
  * 또 다른 문제도 있는데 웹 응답 헤더에 담긴 JWT token을 변경 불가능하게 할 수가 없기 때문에 JWT token이 안전하게
@@ -74,6 +74,7 @@ public interface JWTService {
      * 
      * JWT token 파싱을 하는 이 메서드에서 인자로 {@link TokenDTO}를 받고 있는데, 단순히 JWT token 문자열만을 받지
      * 않은 이유는 parsing을 수행하는 과정 중 처리되는 검증 작업에 필요한 추가 정보가 필요할 수 있기 때문이다.
+     * (IP address 와 같은)
      * 
      */
     public TokenDTO parseToken(TokenDTO tokenDTO);
