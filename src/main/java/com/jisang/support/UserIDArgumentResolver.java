@@ -76,11 +76,11 @@ public class UserIDArgumentResolver implements HandlerMethodArgumentResolver {
             DefaultUserDetailsAuthentication auth = (DefaultUserDetailsAuthentication) authentication;
 
             if (auth.getPrincipal() == null) {
-                logger.error("Somethis's wrong. Principal of Authentication object is null.");
+                logger.error("Something is wrong. Principal of Authentication object is null.");
 
                 throw new IllegalStateException("Illegal principal exists in authentication. Fixing required.");
             } else if (auth.getPrincipal().getId() == null) {
-                logger.error("Somethis's wrong. User ID of Principal is null.");
+                logger.error("Something is wrong. User ID of Principal is null.");
 
                 throw new IllegalStateException("Illegal principal exists in authentication. Fixing required.");
             }
@@ -89,7 +89,7 @@ public class UserIDArgumentResolver implements HandlerMethodArgumentResolver {
 
             return new UserID(auth.getPrincipal().getId());
         } else {
-            logger.error("Something's wrong. Received Authentication object is invalid.");
+            logger.error("Something is wrong. Received Authentication object is invalid.");
             logger.error("Authentication must be instance of {} but {}", DefaultUserDetailsAuthentication.class,
                     authentication);
 

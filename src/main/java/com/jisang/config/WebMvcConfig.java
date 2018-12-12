@@ -47,11 +47,17 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Bean
     public Docket api() {
 
-        return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.any()).build().apiInfo(apiInfo()).ignoredParameterTypes(UserID.class)
-                .ignoredParameterTypes(Locale.class).useDefaultResponseMessages(false)
+        return new Docket(DocumentationType.SWAGGER_2)
+                .select()
+                .apis(RequestHandlerSelectors.any())
+                .paths(PathSelectors.any())
+                .build()
+                .apiInfo(apiInfo())
+                .ignoredParameterTypes(UserID.class)
+                .ignoredParameterTypes(Locale.class)
+                .useDefaultResponseMessages(false)
                 .globalResponseMessage(RequestMethod.GET,
-                        Collections.singletonList(
+                       Collections.singletonList(
                                 new ResponseMessageBuilder().code(500).message(internalServerErrorMSG).build()))
                 .globalResponseMessage(RequestMethod.POST,
                         Collections.singletonList(
@@ -66,15 +72,20 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         Collections.singletonList(
                                 new ResponseMessageBuilder().code(500).message(internalServerErrorMSG).build()))
                 .globalResponseMessage(RequestMethod.GET,
-                        Collections.singletonList(new ResponseMessageBuilder().code(404).message(notFoundMSG).build()))
+                        Collections.singletonList(
+                                new ResponseMessageBuilder().code(404).message(notFoundMSG).build()))
                 .globalResponseMessage(RequestMethod.POST,
-                        Collections.singletonList(new ResponseMessageBuilder().code(404).message(notFoundMSG).build()))
+                        Collections.singletonList(
+                                new ResponseMessageBuilder().code(404).message(notFoundMSG).build()))
                 .globalResponseMessage(RequestMethod.PUT,
-                        Collections.singletonList(new ResponseMessageBuilder().code(404).message(notFoundMSG).build()))
+                        Collections.singletonList(
+                                new ResponseMessageBuilder().code(404).message(notFoundMSG).build()))
                 .globalResponseMessage(RequestMethod.DELETE,
-                        Collections.singletonList(new ResponseMessageBuilder().code(404).message(notFoundMSG).build()))
+                        Collections.singletonList(
+                                new ResponseMessageBuilder().code(404).message(notFoundMSG).build()))
                 .globalResponseMessage(RequestMethod.PATCH,
-                        Collections.singletonList(new ResponseMessageBuilder().code(404).message(notFoundMSG).build()));
+                        Collections.singletonList(
+                                new ResponseMessageBuilder().code(404).message(notFoundMSG).build()));
     }
 
     private ApiInfo apiInfo() {
